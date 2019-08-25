@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 String format(DateTime date, [String format = "dd/MM/yyyy HH:mm:ss"]) {
   String response = date == null
@@ -20,4 +21,28 @@ String formatTime(TimeOfDay time) {
       : "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
 
   return response;
+}
+
+
+String frindlyFormatTime(DateTime dateTime){
+
+  var dateDif = DateTime.now().difference(dateTime);
+
+  if(dateDif.inSeconds < 60){
+      return "Alguns segundos atrás";
+  }
+
+  if(dateDif.inMinutes < 3){
+    return "Alguns minutos atrás";
+  } 
+
+  if(dateDif.inHours < 1){
+    return "${dateDif.inMinutes}m";
+  }
+
+   if(dateDif.inDays < 1){
+      return "${dateTime.hour}h ${dateTime.minute}m";
+  }
+
+  return DateFormat("dd/MM/yyyy").format(dateTime);
 }

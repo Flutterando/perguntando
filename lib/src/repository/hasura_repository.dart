@@ -136,33 +136,38 @@ class HasuraRepository extends Disposable {
   Stream<List<LectureQuestionModel>> getQuestionLectures({@required LectureModel lecture, @required UserModel user}) {
     var query =
         '''subscription getQuestionLectures(\$id_lecture:Int!, \$id_user:Int!){
-                    lecture_question(where: {id_lecture: {_eq: \$id_lecture}}, order_by: {lecture_question_liked_aggregate: {count: desc}}) {
+                    lecture_question(where: {id_lecture: {_eq: \$id_lecture}}, order_by: {lecture_question_likeds_aggregate: {count: desc}}) {
                       id_lecture_question
                       id_lecture
                       description
                       info_date
                       user {
-                        id_user
+                        id
                         name
+                        photo
                       }
-                      lecture_question_liked_aggregate {
+                      lecture_question_likeds_aggregate {
                         aggregate {
                           count
                         }
                       }
-                      lecture_question_liked(where: {id_user: {_eq: \$id_user}}) {
+                      lecture_question_likeds(where: {id_user: {_eq: \$id_user}}) {
                         id_lecture_question_liked
                       }
-                    }
+                    } 
                   }''';
     try {
       Snapshot snapshot = conn.subscription(query, variables: {
         'id_lecture': lecture.idLecture,
         'id_user': user.idUser,
       });
+
       return snapshot.stream.map(
-        (json) =>
-            LectureQuestionModel.fromJsonList(json['data']['lecture_question']),
+        (json) {
+          var a =   LectureQuestionModel.fromJsonList(json['data']['lecture_question']);
+          return a;
+        }
+          
       );
     } on HasuraError catch (e) {
       print('LOGX ==:>> ERROR[getQuestionLectures]');
@@ -225,7 +230,7 @@ class HasuraRepository extends Disposable {
     }
   }
 
-  Future<bool> createLectureQuestionLiked(LectureQuestionLikedModel lectureQuestionLiked) async {
+  Future<bool> createLectureQuestionLiked(LectureQuestionModel lectureQuestion) async {
     var query =
         '''mutation createLiked(\$id_lecture_question:Int!, \$id_user:Int!){
                       insert_lecture_question_liked(objects: {id_lecture_question: \$id_lecture_question, id_user: \$id_user}) {
@@ -236,8 +241,8 @@ class HasuraRepository extends Disposable {
       await conn.mutation(
         query,
         variables: {
-          'id_lecture_question': lectureQuestionLiked.idLectureQuestion,
-          'id_user': lectureQuestionLiked.idUser,
+          'id_lecture_question': lectureQuestion.idLectureQuestion,
+          'id_user': lectureQuestion.idUser,
         },
       );
       return true;
@@ -250,20 +255,20 @@ class HasuraRepository extends Disposable {
     }
   }
 
-  Future<bool> deleteLectureQuestionLiked(LectureQuestionLikedModel lectureQuestionLiked) async {
+  Future<bool> deleteLectureQuestionLiked(LectureQuestionModel lectureQuestionModel) async {
     var query =
-        '''mutation deleteLectureQuestionLiked(\$id_lecture_question_liked:Int!){
-            delete_lecture_question_liked(where: {id_lecture_question_liked: {_eq: \$id_lecture_question_liked}}) {
+        '''mutation deleteLectureQuestionLiked(\$id_lecture_question:Int!, \$id_user:Int!){
+           delete_lecture_question(where: {id_lecture_question: {_eq: \$id_lecture_question}, id_user: {_eq: \$id_user},}) {
               affected_rows
-            }
+            }          
           }''';
 
     try {
       await conn.mutation(
         query,
         variables: {
-          'id_lecture_question_liked':
-              lectureQuestionLiked.idLectureQuestionLiked,
+          'id_lecture_question': lectureQuestionModel.idLectureQuestion,
+          'id_user': lectureQuestionModel.idUser,
         },
       );
       return true;

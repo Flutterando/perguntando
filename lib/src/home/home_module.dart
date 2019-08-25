@@ -22,8 +22,7 @@ class HomeModule extends ModuleWidget {
 
   @override
   List<Dependency> get dependencies => [
-        Dependency((i) => HomeRepository(i.get<CustomHasuraConnect>())),
-        Dependency((i) => CustomHasuraConnect(AppModule.to.bloc<AuthBloc>())),
+        Dependency((i) => HomeRepository(AppModule.to.get<CustomHasuraConnect>())),        
       ];
 
   @override
