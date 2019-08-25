@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:perguntando/src/app_module.dart';
 import 'package:perguntando/src/login/login_module.dart';
+import 'package:perguntando/src/profile/profile_module.dart';
 import 'package:perguntando/src/shared/blocs/auth_bloc.dart';
 import 'package:perguntando/src/splash/splash_page.dart';
 
@@ -60,6 +61,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         Icons.person,
                         color: Colors.white,
                         size: 35,
+                      ),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfileModule()),
                       ),
                       title: Text(
                         "EDITAR CONTA",
