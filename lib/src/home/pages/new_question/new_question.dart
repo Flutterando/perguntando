@@ -13,6 +13,7 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
   var bloc = QuestionModule.to.bloc<NewQuestionBloc>();
   var formKey = GlobalKey<FormState>();
   var focusNode = FocusNode();
+  final maxLenght = 140;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,23 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
         // iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: <Widget>[
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: AnimatedBuilder(
+                animation: bloc.perguntaTextController,
+                builder: (context, _) {
+                  final count = bloc.perguntaTextController.text.length;
+                  return Text(
+                    "$count/$maxLenght",
+                    style: TextStyle(color: Colors.black),
+                  );
+                },
+              ),
+            ),
+          )
+        ],
         title: Text(
           "Nova pergunta",
           style: TextStyle(color: Colors.grey, fontSize: 16.5),
@@ -30,72 +48,72 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                child: Container(
-                  margin: const EdgeInsets.only(top: 15, left: 10),
-                  child: TextFormField(
-                    maxLength: 140,
-                    focusNode: focusNode,
-                    controller: bloc.perguntaTextController,
-                    autofocus: true,
-                    //  expands: true,
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      hintText: "Digite a sua pergunta aqui...",
-                      hintStyle: TextStyle(color: Colors.blue[800]),
-                    ),
-                    maxLines: null,
-                    validator: (data) {
-                      if (data.length < 15) {
-                        showDialog(
-                            context: context,
-                            builder: (innerContext) {
-                              return AlertDialog(
-                                title: Text("Alerta"),
-                                content: Text(
-                                    "A mensagem deve possuir mais de 15 caracteres."),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    onPressed: () {
-                                      Navigator.of(innerContext).pop();
-                                      focusNode.requestFocus();
-                                    },
-                                    child: Text("OK"),
-                                  ),
-                                ],
-                              );
-                            });
-                        return "A mensagem deve possuir mais de 15 caracteres.";
-                      }
-
-                      if (data.length > 140) {
-                        showDialog(
-                            context: context,
-                            builder: (innerContext) {
-                              return AlertDialog(
-                                title: Text("Alerta"),
-                                content: Text(
-                                    "A mensagem não pode ter mais de 140 caracteres."),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    onPressed: () {
-                                      Navigator.of(innerContext).pop();
-                                      focusNode.requestFocus();
-                                    },
-                                    child: Text("OK"),
-                                  ),
-                                ],
-                              );
-                            });
-                        return "A mensagem deve possuir mais de 140 caracteres.";
-                      }
-
-                      return null;
-                    },
+            child: Form(
+              key: formKey,
+              child: Container(
+                margin: const EdgeInsets.only(top: 15, left: 10),
+                child: TextFormField(
+                  maxLength: maxLenght,
+                  focusNode: focusNode,
+                  controller: bloc.perguntaTextController,
+                  autofocus: true,
+                  expands: true,
+                  decoration: InputDecoration(
+                    counter: Container(height: 0),
+                    border: InputBorder.none,
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: "Digite a sua pergunta aqui...",
+                    hintStyle: TextStyle(color: Colors.blue[800]),
                   ),
+                  maxLines: null,
+                  validator: (data) {
+                    if (data.length < 15) {
+                      showDialog(
+                          context: context,
+                          builder: (innerContext) {
+                            return AlertDialog(
+                              title: Text("Alerta"),
+                              content: Text(
+                                  "A mensagem deve possuir mais de 15 caracteres."),
+                              actions: <Widget>[
+                                FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(innerContext).pop();
+                                    focusNode.requestFocus();
+                                  },
+                                  child: Text("OK"),
+                                ),
+                              ],
+                            );
+                          });
+                      return "A mensagem deve possuir mais de 15 caracteres.";
+                    }
+
+                    if (data.length > 140) {
+                      showDialog(
+                          context: context,
+                          builder: (innerContext) {
+                            return AlertDialog(
+                              title: Text("Alerta"),
+                              content: Text(
+                                  "A mensagem não pode ter mais de 140 caracteres."),
+                              actions: <Widget>[
+                                FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(innerContext).pop();
+                                    focusNode.requestFocus();
+                                  },
+                                  child: Text("OK"),
+                                ),
+                              ],
+                            );
+                          });
+                      return "A mensagem deve possuir mais de 140 caracteres.";
+                    }
+
+                    return null;
+                  },
                 ),
               ),
             ),
@@ -118,7 +136,7 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
       curve: Curves.easeInOut,
       decoration: BoxDecoration(
           color: Colors.blue, borderRadius: BorderRadius.circular(40)),
-     // width: isLoading ? 60 : MediaQuery.of(context).size.width,
+      // width: isLoading ? 60 : MediaQuery.of(context).size.width,
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,
       child: Hero(
@@ -177,13 +195,15 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                 },
           child: Container(
             decoration: BoxDecoration(
-          //    borderRadius: isLoading ? BorderRadius.circular(100) : null,
+              //    borderRadius: isLoading ? BorderRadius.circular(100) : null,
               color: Colors.blue[800],
             ),
             height: 60,
             alignment: Alignment.center,
             child: isLoading
-                ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white),)
+                ? CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  )
                 : Icon(Icons.add, size: 40, color: Colors.white),
           ),
         ),
