@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hasura_connect/hasura_connect.dart';
 import 'package:perguntando/src/home/pages/question/components/question_card.dart';
 import 'package:perguntando/src/home/pages/question/components/custom_appbar.dart';
 import 'package:perguntando/src/home/pages/new_question/new_question.dart';
+import 'package:perguntando/src/home/pages/question/question_bloc.dart';
+import 'package:perguntando/src/home/pages/question/question_module.dart';
+import 'package:perguntando/src/shared/models/lecture_question_model.dart';
 
 class QuestionPage extends StatefulWidget {
   @override
@@ -9,14 +13,58 @@ class QuestionPage extends StatefulWidget {
 }
 
 class _QuestionPageState extends State<QuestionPage> {
+  final questionBloc = QuestionModule.to.bloc<QuestionBloc>();
+  var scaffoldKey = GlobalKey<ScaffoldState>();
+
+  var scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+      var max = scrollController.position.maxScrollExtent;
+
+      var offset = scrollController.offset;
+      if (offset > max - 20) {
+        questionBloc.getMoreQuestions();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(80),
-      body: ListView.builder(
-        padding: EdgeInsets.only(bottom: 80),
-        itemCount: 3,
-        itemBuilder: (context, i) => QuestionCard(),
+      key: scaffoldKey,
+      appBar: CustomAppBar(size: 80),
+      body: StreamBuilder<List<LectureQuestionModel>>(
+        stream: questionBloc.questions,
+        builder: (_, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                "Ocorreu um erro",
+                style: TextStyle(color: Colors.redAccent),
+              ),
+            );
+          }
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return ListView.builder(
+            controller: scrollController,
+            itemCount: snapshot.data.length,
+            itemBuilder: (_, index) {
+              return QuestionCard(
+                lectureQuestionModel: snapshot.data[index],
+                scaffoldKey: scaffoldKey,
+              );
+            },
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: "a",
@@ -37,12 +85,11 @@ class _QuestionPageState extends State<QuestionPage> {
           //     ),
           //   ),
           // );
-           Navigator.push(
+          Navigator.push(
             context,
             MaterialPageRoute(
               fullscreenDialog: true,
               builder: (BuildContext context) => NewQuestionPage(),
-        
             ),
           );
         },

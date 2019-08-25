@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import '../question_module.dart';
 import '../question_bloc.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double size;
-  CustomAppBar(this.size);
+  
+  CustomAppBar({@required this.size});
 
   @override
   Size get preferredSize => Size.fromHeight(size);
@@ -34,7 +35,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: CircleAvatar(
                       maxRadius: 25,
                       backgroundImage: CachedNetworkImageProvider(
-                        "https://i.udemycdn.com/user/200_H/51101684_c590_2.jpg",
+                        "${questionBloc.lecture.presenter.photo}}",
                       )),
                 ),
                 Expanded(
@@ -49,7 +50,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           child: Material(
                             color: Colors.transparent,
                             child: Text(
-                              "Jacob Moura",
+                              "${questionBloc.lecture.presenter.name}",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey[700],
@@ -63,7 +64,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           child: Material(
                             color: Colors.transparent,
                             child: Text(
-                              "Nunca diga não para o seu designer",
+                              "${questionBloc.lecture.title}",
                               style: TextStyle(
                                   fontSize: 14, color: Colors.grey[700]),
                             ),
@@ -78,7 +79,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Material(
                     color: Colors.transparent,
                     child: Text(
-                      "10:00",
+                      "${DateFormat('hh:mm').format(questionBloc.lecture.infoDate)}",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).primaryColor),
