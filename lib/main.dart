@@ -8,8 +8,6 @@ import 'package:flutter/foundation.dart' show debugDefaultTargetPlatformOverride
 import 'dart:io' show Platform;
 
 void main() {
-  
-  runApp(AppModule());
   _setTargetPlatformForDesktop();
   _setOrientation();
   _initOneSignal();
