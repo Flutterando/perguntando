@@ -13,7 +13,8 @@ class UserModel {
       this.email,
       this.infoDate,
       this.photo,
-      this.githubUser});
+      this.githubUser,
+      this.password});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     idUser = json['id'];
@@ -29,12 +30,12 @@ class UserModel {
     data['id'] = this.idUser;
     data['name'] = this.name;
     data['mail'] = this.email;
+    data['password'] = this.password;
     data['info_date'] = this.infoDate;
     data['photo'] = this.photo;
     data['github_user'] = this.githubUser;
     return data;
   }
-
 
   @override
   String toString() {

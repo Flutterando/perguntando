@@ -6,8 +6,8 @@ import 'package:perguntando/src/login/login_page.dart';
 import 'package:perguntando/src/repository/hasura_repository.dart';
 import 'package:perguntando/src/shared/blocs/auth_bloc.dart';
 
-import 'pages/page_register/register_bloc.dart';
 import 'pages/sign_in/sign_in_bloc.dart';
+import 'pages/sing_up/sing_up_bloc.dart';
 
 class LoginModule extends ModuleWidget {
   @override
@@ -16,7 +16,7 @@ class LoginModule extends ModuleWidget {
               AppModule.to.bloc<AuthBloc>(),
               AppModule.to.get<HasuraRepository>(),
             )),
-        Bloc((i) => RegisterBloc()),
+        Bloc((i) => SingUpBloc()),
         Bloc((i) => LoginBloc()),
       ];
 
