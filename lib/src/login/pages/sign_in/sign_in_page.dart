@@ -152,7 +152,7 @@ class _SignInPageState extends State<SignInPage> {
                           hasFloatingPlaceholder: false,
                           hintText: "email",
                           hintStyle: TextStyle(
-                                       color: Color(0xffA7A7A7),
+                            color: Color(0xffA7A7A7),
                           ),
                         ),
                       ),
@@ -194,7 +194,7 @@ class _SignInPageState extends State<SignInPage> {
                           hasFloatingPlaceholder: false,
                           hintText: "password",
                           hintStyle: TextStyle(
-                                       color: Color(0xffA7A7A7),
+                            color: Color(0xffA7A7A7),
                           ),
                         ),
                         obscureText: true,
@@ -204,9 +204,7 @@ class _SignInPageState extends State<SignInPage> {
                       padding: EdgeInsets.only(top: 20),
                       width: double.infinity,
                       child: GestureDetector(
-                        onTap: () {
-                         
-                        },
+                        onTap: () {},
                         child: Text(
                           "esqueci minha senha",
                           textAlign: TextAlign.end,
@@ -288,19 +286,31 @@ class _SignInPageState extends State<SignInPage> {
       height: 30,
       width: isLoading ? 48 : 150,
       alignment: Alignment.center,
-      child: InkWell(
-        onTap: bloc.onLogin,
-        child: !isLoading
-            ? Text(
-                "ENTRAR",
-                textAlign: TextAlign.center,
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              )
-            : Padding(
-                padding: EdgeInsets.all(10),
-                child:
-                    CircularProgressIndicator(backgroundColor: Colors.white)),
+      child: Material(
+        color: Colors.transparent,
+              child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: bloc.onLogin,
+          child: !isLoading
+              ? Container(
+                  width: 150,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40)),
+                  child: Center(
+                    child: Text(
+                      "ENTRAR",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: EdgeInsets.all(10),
+                  child:
+                      CircularProgressIndicator(backgroundColor: Colors.white)),
+        ),
       ),
     );
   }
