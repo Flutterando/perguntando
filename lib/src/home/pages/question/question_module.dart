@@ -1,3 +1,4 @@
+import 'package:perguntando/src/home/pages/new_question/new_question_bloc.dart';
 import 'package:perguntando/src/home/pages/question/question_bloc.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class QuestionModule extends ModuleWidget {
   @override
   List<Bloc> get blocs => [
         Bloc((i) => QuestionBloc(tag,lecture,AppModule.to.getDependency<HasuraRepository>(), AppModule.to.bloc<AuthBloc>().userControleValue )),
+        Bloc((i) => NewQuestionBloc(AppModule.to.getDependency<HasuraRepository>() , i.bloc<QuestionBloc>())),
       ];
 
   @override
