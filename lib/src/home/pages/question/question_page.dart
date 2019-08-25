@@ -54,6 +54,12 @@ class _QuestionPageState extends State<QuestionPage> {
             );
           }
 
+          if(snapshot.data.length < 1){
+            return Center(
+              child: Text("Ainda não tem perguntas aqui, seja o primeiro!", softWrap: true,),
+            );
+          }
+
           return ListView.builder(
             controller: scrollController,
             itemCount: snapshot.data.length,
