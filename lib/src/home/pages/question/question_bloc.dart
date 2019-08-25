@@ -22,12 +22,12 @@ class QuestionBloc extends BlocBase {
   }
 
   Future<bool> like(LectureQuestionModel lectureQuestion) async {
-    return await _hasuraRepository.createLectureQuestionLiked(lectureQuestion);
+    return await _hasuraRepository.createLectureQuestionLiked(lectureQuestion,user.idUser);
   }
 
   Future<bool> dislike(LectureQuestionModel lectureQuestionLikedModel) async {
     return await _hasuraRepository
-        .deleteLectureQuestionLiked(lectureQuestionLikedModel);
+        .deleteLectureQuestionLiked(lectureQuestionLikedModel,user.idUser);
   }
 
   //dispose will be called automatically by closing its streams

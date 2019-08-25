@@ -230,10 +230,10 @@ class HasuraRepository extends Disposable {
     }
   }
 
-  Future<bool> createLectureQuestionLiked(LectureQuestionModel lectureQuestion) async {
+  Future<bool> createLectureQuestionLiked(LectureQuestionModel lectureQuestion, int userId) async {
     var query =
         '''mutation createLiked(\$id_lecture_question:Int!, \$id_user:Int!){
-                      insert_lecture_question_liked(objects: {id_lecture_question: \$id_lecture_question, id_user: \$id_user}) {
+                      insert_lecture_question_liked(objects: {id_lecture_question: \$id_lecture_question, id_user: \$id_user , id_lecture_question_liked: 0}) {
                         affected_rows
                       }
                     }''';
@@ -242,7 +242,7 @@ class HasuraRepository extends Disposable {
         query,
         variables: {
           'id_lecture_question': lectureQuestion.idLectureQuestion,
-          'id_user': lectureQuestion.idUser,
+          'id_user': userId,
         },
       );
       return true;
@@ -255,10 +255,10 @@ class HasuraRepository extends Disposable {
     }
   }
 
-  Future<bool> deleteLectureQuestionLiked(LectureQuestionModel lectureQuestionModel) async {
+  Future<bool> deleteLectureQuestionLiked(LectureQuestionModel lectureQuestionModel, int userId) async {
     var query =
         '''mutation deleteLectureQuestionLiked(\$id_lecture_question:Int!, \$id_user:Int!){
-           delete_lecture_question(where: {id_lecture_question: {_eq: \$id_lecture_question}, id_user: {_eq: \$id_user},}) {
+           delete_lecture_question_liked(where: {id_lecture_question: {_eq: \$id_lecture_question}, id_user: {_eq: \$id_user},}) {
               affected_rows
             }          
           }''';
@@ -268,7 +268,7 @@ class HasuraRepository extends Disposable {
         query,
         variables: {
           'id_lecture_question': lectureQuestionModel.idLectureQuestion,
-          'id_user': lectureQuestionModel.idUser,
+          'id_user': userId,
         },
       );
       return true;

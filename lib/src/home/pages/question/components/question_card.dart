@@ -11,14 +11,17 @@ import '../question_bloc.dart';
 class QuestionCard extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
   final LectureQuestionModel lectureQuestionModel;
-  const QuestionCard({Key key,@required this.lectureQuestionModel,@required this.scaffoldKey}) : super(key: key);
+  const QuestionCard(
+      {Key key,
+      @required this.lectureQuestionModel,
+      @required this.scaffoldKey})
+      : super(key: key);
 
   @override
   _QuestionCardState createState() => _QuestionCardState();
 }
 
 class _QuestionCardState extends State<QuestionCard> {
-  var authBloc = AppModule.to.bloc<AuthBloc>();
   var bloc = QuestionModule.to.bloc<QuestionBloc>();
 
   @override
@@ -80,7 +83,7 @@ class _QuestionCardState extends State<QuestionCard> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  if (authBloc.userControleValue.idUser ==
+                  if (bloc.user.idUser ==
                       widget.lectureQuestionModel.user.idUser)
                     FlatButton(
                       onPressed: () async {
@@ -99,10 +102,15 @@ class _QuestionCardState extends State<QuestionCard> {
                                   ),
                                   FlatButton(
                                     onPressed: () async {
-                                      var excluida = await bloc.deleteLectureQuestion(widget.lectureQuestionModel);
+                                      var excluida =
+                                          await bloc.deleteLectureQuestion(
+                                              widget.lectureQuestionModel);
                                       if (!excluida) {
-                                        final snackBar = SnackBar(content: Text("Não foi possivel excluir"));
-                                        widget.scaffoldKey.currentState.showSnackBar(snackBar);
+                                        final snackBar = SnackBar(
+                                            content: Text(
+                                                "Não foi possivel excluir"));
+                                        widget.scaffoldKey.currentState
+                                            .showSnackBar(snackBar);
                                       }
                                       Navigator.of(innerContext).pop();
                                     },
@@ -130,13 +138,15 @@ class _QuestionCardState extends State<QuestionCard> {
                       ),
                       IconButton(
                         icon: Icon(
-                          widget.lectureQuestionModel.isLiked ? Icons.favorite : Icons.favorite_border,
+                          widget.lectureQuestionModel.isLiked
+                              ? Icons.favorite
+                              : Icons.favorite_border,
                           color: Colors.redAccent,
                           size: 35,
                         ),
                         onPressed: () async {
-                          if(widget.lectureQuestionModel.isLiked){
-                              await bloc.dislike(widget.lectureQuestionModel);
+                          if (widget.lectureQuestionModel.isLiked) {
+                            await bloc.dislike(widget.lectureQuestionModel);
                           } else {
                             await bloc.like(widget.lectureQuestionModel);
                           }
