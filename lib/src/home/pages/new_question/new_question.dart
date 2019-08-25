@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hasura_connect/hasura_connect.dart';
 import 'package:perguntando/src/home/pages/question/question_module.dart';
 
 import 'new_question_bloc.dart';
@@ -99,65 +100,94 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
               ),
             ),
           ),
-          Hero(
-            tag: "a",
-            child: InkWell(
-              onTap: () async {
-                var valid = formKey.currentState.validate();
-                if (valid) {
-                  var inserted = await bloc.sendMessage();
-                  if(inserted){
-                     showDialog(
-                            context: context,
-                            builder: (innerContext) {
-                              return AlertDialog(
-                                title: Text("Sucesso"),
-                                content: Text(
-                                    "Pergunta enviada com sucesso!"),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      Navigator.of(context).pop();
-                                      bloc.perguntaTextController.clear();
-                                    },
-                                    child: Text("OK"),
-                                  ),
-                                ],
-                              );
-                            });                   
-                  } else {
-                   showDialog(
-                            context: context,
-                            builder: (innerContext) {
-                              return AlertDialog(
-                                title: Text("Alerta"),
-                                content: Text(
-                                    "Ocorreu um erro ao tentar enviar sua mensagem. Tente mais tarde."),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    onPressed: () {
-                                      Navigator.of(innerContext).pop();
-                                      focusNode.requestFocus();
-                                    },
-                                    child: Text("OK"),
-                                  ),
-                                ],
-                              );
-                            });
-                  }
-                }
-              },
-              child: Container(
-                height: 60,
-                alignment: Alignment.center,
-                child: Icon(Icons.add, size: 40, color: Colors.white),
-                color: Colors.blue[800],
-              ),
-            ),
-          ),
+          StreamBuilder<bool>(
+            initialData: false,
+            stream: bloc.isLoading,
+            builder: (_, snapshot) {
+              return _buttonEnter(snapshot?.data ?? false);
+            },
+          )
         ],
-      ),     
+      ),
+    );
+  }
+
+  Widget _buttonEnter(bool isLoading) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
+      decoration: BoxDecoration(
+          color: Colors.blue, borderRadius: BorderRadius.circular(40)),
+     // width: isLoading ? 60 : MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width,
+      alignment: Alignment.center,
+      child: Hero(
+        tag: "a",
+        child: InkWell(
+          onTap: isLoading
+              ? null
+              : () async {
+                  var valid = formKey.currentState.validate();
+                  if (valid) {
+                    var inserted = await bloc.sendMessage();
+                    if (inserted) {
+                      showDialog(
+                        context: context,
+                        builder: (innerContext) {
+                          return AlertDialog(
+                            title: Text("Sucesso"),
+                            content: Text("Pergunta enviada com sucesso!"),
+                            actions: <Widget>[
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                  bloc.perguntaTextController.clear();
+                                },
+                                child: Text("OK"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (innerContext) {
+                          return AlertDialog(
+                            title: Text("Alerta"),
+                            content: Text(
+                                "Ocorreu um erro ao tentar enviar sua mensagem. Tente mais tarde."),
+                            actions: <Widget>[
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.of(innerContext).pop();
+                                  focusNode.requestFocus();
+                                },
+                                child: Text("OK"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+
+                    bloc.isLoading.add(false);
+                  }
+                },
+          child: Container(
+            decoration: BoxDecoration(
+          //    borderRadius: isLoading ? BorderRadius.circular(100) : null,
+              color: Colors.blue[800],
+            ),
+            height: 60,
+            alignment: Alignment.center,
+            child: isLoading
+                ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white),)
+                : Icon(Icons.add, size: 40, color: Colors.white),
+          ),
+        ),
+      ),
     );
   }
 }
