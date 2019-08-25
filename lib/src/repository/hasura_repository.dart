@@ -190,11 +190,10 @@ class HasuraRepository extends Disposable {
   }
 
   //--
-  Future<LectureQuestionModel> createLectureQuestion(
-      LectureQuestionModel lectureQuestion) async {
+  Future<LectureQuestionModel> createLectureQuestion(LectureQuestionModel lectureQuestion) async {
     var query =
-        '''mutation createLectureQuestion(\$id_lecture:Int!, \$id_user:Int!, \$description:String!){
-                      insert_lecture_question(objects: {id_lecture: \$id_lecture, id_user:  \$id_user, description: \$description}) {
+        '''mutation createLectureQuestion(\$id_lecture:Int!, \$id_user:Int!, \$description:String!, \$info_date:timestamptz!){
+                      insert_lecture_question(objects: {id_lecture: \$id_lecture, id_user:  \$id_user, description: \$description , info_date: \$info_date }) {
                         returning {
                           id_lecture_question
                           info_date
@@ -205,13 +204,12 @@ class HasuraRepository extends Disposable {
       var data = await conn.mutation(query, variables: {
         'id_lecture': lectureQuestion.idLecture,
         'id_user': lectureQuestion.idUser,
-        'description': lectureQuestion.description
+        'description': lectureQuestion.description,
+        'info_date': DateTime.now().toUtc().toString()
       });
 
-      lectureQuestion.idLectureQuestion = data['data']
-          ['insert_lecture_question']['returning'][0]['id_lecture_question'];
-      lectureQuestion.infoDate =
-          data['data']['insert_lecture_question']['returning'][0]['info_date'];
+      lectureQuestion.idLectureQuestion = data['data']['insert_lecture_question']['returning'][0]['id_lecture_question'];
+      lectureQuestion.infoDate =  DateTime.tryParse(data['data']['insert_lecture_question']['returning'][0]['info_date']);
       return lectureQuestion;
     } on HasuraError catch (e) {
       print('LOGX ==:>> ERROR[createLectureQuestion]');
