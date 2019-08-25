@@ -139,11 +139,14 @@ class HasuraRepository extends Disposable {
   }
 
   //--
-  Snapshot<List<LectureQuestionModel>> getQuestionLectures(
-      {@required LectureModel lecture, @required UserModel user}) {
+  Snapshot<List<LectureQuestionModel>> getQuestionLectures({
+    @required LectureModel lecture,
+    @required UserModel user,
+    int limit = 10,
+  }) {
     var query =
-        '''subscription getQuestionLectures(\$id_lecture:Int!, \$id_user:Int!){
-                    lecture_question(where: {id_lecture: {_eq: \$id_lecture}}, order_by: {lecture_question_likeds_aggregate: {count: desc}}) {
+        '''subscription getQuestionLectures(\$id_lecture:Int!, \$id_user:Int!, \$limit: Int!){
+                    lecture_question(where: {id_lecture: {_eq: \$id_lecture}}, order_by: {lecture_question_likeds_aggregate: {count: desc}}, limit: \$limit) {
                       id_lecture_question
                       id_lecture
                       description
@@ -165,11 +168,12 @@ class HasuraRepository extends Disposable {
                     } 
                   }''';
     try {
-      Snapshot<List<LectureQuestionModel>> snapshot =
-          conn.subscription(query, variables: {
-        'id_lecture': lecture.idLecture,
-        'id_user': user.idUser,
-      }).map((json) {
+      Snapshot<List<LectureQuestionModel>> snapshot = conn.subscription(query,
+          variables: {
+            'id_lecture': lecture.idLecture,
+            'id_user': user.idUser,
+            'limit': limit
+          }).map((json) {
         var a =
             LectureQuestionModel.fromJsonList(json['data']['lecture_question']);
         return a;
@@ -297,6 +301,7 @@ class HasuraRepository extends Disposable {
 
         return data;
       });
+
       return true;
     } on HasuraError catch (e) {
       print('LOGX ==:>> ERROR[deleteLectureQuestionLiked]');

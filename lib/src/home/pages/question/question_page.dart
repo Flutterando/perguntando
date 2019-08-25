@@ -15,27 +15,53 @@ class QuestionPage extends StatefulWidget {
 class _QuestionPageState extends State<QuestionPage> {
   final questionBloc = QuestionModule.to.bloc<QuestionBloc>();
   var scaffoldKey = GlobalKey<ScaffoldState>();
+
+  var scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+      var max = scrollController.position.maxScrollExtent;
+
+      var offset = scrollController.offset;
+      if (offset > max - 20) {
+        questionBloc.getMoreQuestions();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
       appBar: CustomAppBar(size: 80),
       body: StreamBuilder<List<LectureQuestionModel>>(
-        stream: questionBloc.questions,            
+        stream: questionBloc.questions,
         builder: (_, snapshot) {
-          if(snapshot.hasError){
-              return Center(
-                child: Text("Ocorreu um erro" , style: TextStyle(color: Colors.redAccent),),
-              );
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                "Ocorreu um erro",
+                style: TextStyle(color: Colors.redAccent),
+              ),
+            );
           }
-          if(!snapshot.hasData){
-              return Center(child: CircularProgressIndicator(),);
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
 
           return ListView.builder(
+            controller: scrollController,
             itemCount: snapshot.data.length,
             itemBuilder: (_, index) {
-              return QuestionCard(lectureQuestionModel: snapshot.data[index], scaffoldKey: scaffoldKey,);
+              return QuestionCard(
+                lectureQuestionModel: snapshot.data[index],
+                scaffoldKey: scaffoldKey,
+              );
             },
           );
         },
