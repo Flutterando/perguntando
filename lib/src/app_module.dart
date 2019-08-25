@@ -8,6 +8,7 @@ import 'package:perguntando/src/app_bloc.dart';
 import 'package:perguntando/src/shared/utils/constants.dart';
 
 import 'repository/hasura_repository.dart';
+import 'shared/repositories/custom_hasura_connect.dart';
 
 class AppModule extends ModuleWidget {
   @override
@@ -19,10 +20,8 @@ class AppModule extends ModuleWidget {
 
   @override
   List<Dependency> get dependencies => [
-        Dependency((i) => HasuraRepository(i.get<HasuraConnect>())),
-        Dependency(
-          (i) => HasuraConnect(HASURA_URL),
-        ),
+        Dependency((i) => HasuraRepository(i.get<CustomHasuraConnect>())),
+        Dependency((i) => CustomHasuraConnect(AppModule.to.bloc<AuthBloc>())),
       ];
 
   @override

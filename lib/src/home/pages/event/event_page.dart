@@ -95,7 +95,10 @@ class _EventPageState extends State<EventPage> {
                             MaterialPageRoute(
                               fullscreenDialog: true,
                               builder: (BuildContext context) {
-                                return QuestionModule(tag);
+                                return QuestionModule(
+                                  tag: tag,
+                                  lecture: lecture,
+                                );
                               },
                             ),
                           );

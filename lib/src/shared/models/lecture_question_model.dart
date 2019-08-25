@@ -5,7 +5,7 @@ class LectureQuestionModel {
   int idLecture;
   int idUser;
   String description;
-  String infoDate;
+  DateTime infoDate;
   UserModel user;
   int qtdLike;
   bool isLiked;
@@ -25,10 +25,10 @@ class LectureQuestionModel {
     idLecture = json['id_lecture'];
     idUser = json['id_user'];
     description = json['description'];
-    infoDate = json['info_date'];
+    infoDate = DateTime.tryParse(json['info_date']);
     user = UserModel.fromJson(json['user']);
-    qtdLike = json['lecture_question_liked_aggregate']['aggregate']['count'];
-    isLiked = (json['lecture_question_liked'].length == 0)? false: true; 
+    qtdLike = json['lecture_question_likeds_aggregate']['aggregate']['count'];
+    isLiked = (json['lecture_question_likeds'].length == 0)? false: true; 
   }
 
   Map<String, dynamic> toJson() {
