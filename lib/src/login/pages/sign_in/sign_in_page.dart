@@ -26,16 +26,7 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    authBloc.outUser.listen((v) {
-      if (v != null)
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => HomeModule(),
-          ),
-        );
-    });
     authBloc.inUserState.add(NotAuthenticated());
   }
 
@@ -152,7 +143,7 @@ class _SignInPageState extends State<SignInPage> {
                           hasFloatingPlaceholder: false,
                           hintText: "email",
                           hintStyle: TextStyle(
-                                       color: Color(0xffA7A7A7),
+                            color: Color(0xffA7A7A7),
                           ),
                         ),
                       ),
@@ -194,7 +185,7 @@ class _SignInPageState extends State<SignInPage> {
                           hasFloatingPlaceholder: false,
                           hintText: "password",
                           hintStyle: TextStyle(
-                                       color: Color(0xffA7A7A7),
+                            color: Color(0xffA7A7A7),
                           ),
                         ),
                         obscureText: true,
@@ -204,9 +195,7 @@ class _SignInPageState extends State<SignInPage> {
                       padding: EdgeInsets.only(top: 20),
                       width: double.infinity,
                       child: GestureDetector(
-                        onTap: () {
-                         
-                        },
+                        onTap: () {},
                         child: Text(
                           "esqueci minha senha",
                           textAlign: TextAlign.end,
@@ -289,7 +278,15 @@ class _SignInPageState extends State<SignInPage> {
       width: isLoading ? 48 : 150,
       alignment: Alignment.center,
       child: InkWell(
-        onTap: bloc.onLogin,
+        onTap: () async {
+          final result = await bloc.onLogin();
+          if (result)
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => HomeModule(),
+              ),
+            );
+        },
         child: !isLoading
             ? Text(
                 "ENTRAR",
