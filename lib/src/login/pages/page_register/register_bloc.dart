@@ -7,7 +7,7 @@ class RegisterBloc extends BlocBase {
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
 
-
+  
   @override
   void dispose() {
     super.dispose();
