@@ -352,9 +352,7 @@ class _SingUpPageState extends State<SingUpPage> {
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.blueGrey),
                   ),
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: CircularProgressIndicator(),
                 ),
               );
             }

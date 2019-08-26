@@ -35,12 +35,11 @@ class CircularImageWidget extends StatelessWidget {
               shape: CircleBorder(),
               child: Stack(
                 children: <Widget>[
-                  icon == null
-                      ? SizedBox()
-                      : CircleAvatar(
-                          radius: 100,
-                          backgroundColor: Color.fromRGBO(0, 0, 0, 490),
-                        ),
+                  if (icon != null)
+                    CircleAvatar(
+                      radius: 100,
+                      backgroundColor: Color.fromRGBO(0, 0, 0, 490),
+                    ),
                   InkWell(
                     borderRadius: BorderRadius.circular(100),
                     onTap: onPress ?? () => ImageViewerWidget.network(imageUrl),
