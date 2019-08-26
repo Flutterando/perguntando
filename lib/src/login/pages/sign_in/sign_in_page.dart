@@ -286,7 +286,10 @@ class _SignInPageState extends State<SignInPage> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          onTap: bloc.onLogin,
+          onTap: (){
+            FocusScope.of(context).requestFocus(FocusNode());
+            bloc.onLogin();
+          },
           child: !isLoading
               ? Container(
                   width: 150,
