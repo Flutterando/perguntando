@@ -26,8 +26,7 @@ class QuestionBloc extends BlocBase {
     });
   }
 
-  Observable<List<LectureQuestionModel>> get questions =>
-      Observable(_snapshot.stream);
+  Observable<List<LectureQuestionModel>> get questions => Observable(_snapshot.stream);
 
   Future<bool> deleteLectureQuestion(
       LectureQuestionModel lectureQuestion) async {
@@ -44,8 +43,25 @@ class QuestionBloc extends BlocBase {
         _snapshot, lectureQuestionLikedModel, user.idUser);
   }
 
+  final BehaviorSubject<String> typeStream = BehaviorSubject<String>.seeded('c');
+  String get numberQuestion => typeStream.value; 
+  Sink<String> get numberQuestionIn => typeStream.sink;
+  Observable<String> get numberQuestionOut =>  typeStream.stream;
+
+  // ANCHOR  d - Data | c - Mais curtidas | p - Minhas perguntas
+  void filter(String type) {
+    page = 2;
+    _snapshot = _hasuraRepository.getQuestionLectures(lecture: lecture, user: user, type: type);
+    _snapshot.changeVariable({
+      'id_lecture': lecture.idLecture,
+      'id_user': user.idUser,
+      'limit': page * 10,
+    });
+  }
+
   @override
   void dispose() {
+    typeStream.close();
     super.dispose();
   }
 

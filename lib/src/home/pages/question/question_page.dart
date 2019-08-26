@@ -7,6 +7,7 @@ import 'package:perguntando/src/home/pages/new_question/new_question.dart';
 import 'package:perguntando/src/home/pages/question/question_bloc.dart';
 import 'package:perguntando/src/home/pages/question/question_module.dart';
 import 'package:perguntando/src/shared/models/lecture_question_model.dart';
+import 'package:radial_button/widget/circle_floating_button.dart';
 
 class QuestionPage extends StatefulWidget {
   @override
@@ -63,7 +64,6 @@ class _QuestionPageState extends State<QuestionPage> {
               ),
             );
           }
-
           return ListView.builder(
             controller: scrollController,
             itemCount: snapshot.data.length,
@@ -78,6 +78,45 @@ class _QuestionPageState extends State<QuestionPage> {
           );
         },
       ),
+      floatingActionButton: CircleFloatingButton.floatingActionButton(
+        items: <Widget>[
+          FloatingActionButton(
+            heroTag: 'orderby_date',
+            backgroundColor: Theme.of(context).primaryColor,
+            onPressed: () { 
+              questionBloc?.filter('d');
+            },
+            child: Icon(Icons.date_range),
+          ),
+          FloatingActionButton(
+            heroTag: 'my_question',
+            backgroundColor: Theme.of(context).primaryColor,
+            onPressed: () => print(' -- MINHAS QUESTÕES'),
+            child: Icon(Icons.cached),
+          ),
+          FloatingActionButton(
+              heroTag: 'add_question',
+              backgroundColor: Theme.of(context).primaryColor,
+              child: Icon(Icons.add),
+              onPressed: () {
+                //TODO erro ao retornar
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    fullscreenDialog: true,
+                    builder: (BuildContext context) => NewQuestionPage(),
+                  ),
+                );
+              }),
+        ],
+        color: Colors.redAccent,
+        icon: Icons.menu,
+        duration: Duration(milliseconds: 1000),
+        useOpacity: true,
+        curveAnim: Curves.ease,
+      ),
+
+      /*
       floatingActionButton: FloatingActionButton(
         heroTag: "a",
         backgroundColor: Theme.of(context).primaryColor,
@@ -106,6 +145,8 @@ class _QuestionPageState extends State<QuestionPage> {
           );
         },
       ),
+
+      */
     );
   }
 }

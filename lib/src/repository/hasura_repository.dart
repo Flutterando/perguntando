@@ -142,11 +142,17 @@ class HasuraRepository extends Disposable {
   Snapshot<List<LectureQuestionModel>> getQuestionLectures({
     @required LectureModel lecture,
     @required UserModel user,
+    String type,
     int limit = 10,
   }) {
+    String orderby = (type == 'd')? 'info_date: desc' : 'lecture_question_likeds_aggregate: {count: desc}';
+    print('%%%%%%%%%%%%%%%%%%%%%%%%');
+    print(orderby);
+    print('%%%%%%%%%%%%%%%%%%%%%%%%');
+
     var query =
         '''subscription getQuestionLectures(\$id_lecture:Int!, \$id_user:Int!, \$limit: Int!){
-                    lecture_question(where: {id_lecture: {_eq: \$id_lecture}}, order_by: {lecture_question_likeds_aggregate: {count: desc}}, limit: \$limit) {
+                    lecture_question(where: {id_lecture: {_eq: \$id_lecture}}, order_by: {$orderby}, limit: \$limit) {
                       id_lecture_question
                       id_lecture
                       description
