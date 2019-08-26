@@ -17,6 +17,14 @@ class _SingUpPageState extends State<SingUpPage> {
   var loginBloc = LoginModule.to.bloc<LoginBloc>();
   var singUpBloc = LoginModule.to.bloc<SingUpBloc>();
   Size get size => MediaQuery.of(context).size;
+
+  OutlineInputBorder outlineborder() {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+      borderSide: BorderSide(color: Colors.blue, width: 2),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,16 +114,10 @@ class _SingUpPageState extends State<SingUpPage> {
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
+                          focusedBorder: outlineborder(),
+                          border: outlineborder(),
+                          enabledBorder: outlineborder(),
+                          disabledBorder: outlineborder(),
                           hasFloatingPlaceholder: false,
                           labelText: "seu nome",
                           labelStyle: TextStyle(
@@ -147,16 +149,10 @@ class _SingUpPageState extends State<SingUpPage> {
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
+                          focusedBorder: outlineborder(),
+                          border: outlineborder(),
+                          enabledBorder: outlineborder(),
+                          disabledBorder: outlineborder(),
                           hasFloatingPlaceholder: false,
                           labelText: "seu email",
                           labelStyle: TextStyle(
@@ -192,16 +188,10 @@ class _SingUpPageState extends State<SingUpPage> {
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
+                          focusedBorder: outlineborder(),
+                          border: outlineborder(),
+                          enabledBorder: outlineborder(),
+                          disabledBorder: outlineborder(),
                           hasFloatingPlaceholder: false,
                           labelText: "digita sua senha",
                           labelStyle: TextStyle(
@@ -230,16 +220,10 @@ class _SingUpPageState extends State<SingUpPage> {
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
+                          focusedBorder: outlineborder(),
+                          border: outlineborder(),
+                          enabledBorder: outlineborder(),
+                          disabledBorder: outlineborder(),
                           hasFloatingPlaceholder: false,
                           labelText: "senha novamente",
                           labelStyle: TextStyle(
