@@ -288,7 +288,13 @@ class _SingUpPageState extends State<SingUpPage> {
                       child: RaisedButton(
                         shape: StadiumBorder(),
                         color: Colors.blue,
-                        onPressed: () {},
+                        onPressed: () {
+                          loginBloc.pageController.animateToPage(
+                            2,
+                            duration: Duration(milliseconds: 1000),
+                            curve: Curves.bounceOut,
+                          );
+                        },
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 40),
                           child: Text(

@@ -1,3 +1,4 @@
+import 'package:perguntando/src/login/pages/email_validation/email_validation_bloc.dart';
 import 'package:perguntando/src/app_module.dart';
 import 'package:perguntando/src/login/login_bloc.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
@@ -12,6 +13,7 @@ import 'pages/sing_up/sing_up_bloc.dart';
 class LoginModule extends ModuleWidget {
   @override
   List<Bloc> get blocs => [
+        Bloc((i) => EmailValidationBloc()),
         Bloc((i) => SignInBloc(
               AppModule.to.bloc<AuthBloc>(),
               AppModule.to.get<HasuraRepository>(),

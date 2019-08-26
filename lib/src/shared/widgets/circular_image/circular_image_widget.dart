@@ -48,11 +48,10 @@ class CircularImageWidget extends StatelessWidget {
                 ],
               ),
             ),
-            icon == null
-                ? SizedBox()
-                : IgnorePointer(
-                    child: Icon(icon, size: iconSize),
-                  ),
+            if (icon != null)
+              IgnorePointer(
+                child: Icon(icon, size: iconSize),
+              ),
           ]),
           backgroundImage: NetworkImage(imageUrl),
         ),
