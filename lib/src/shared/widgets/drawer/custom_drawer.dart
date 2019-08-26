@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:perguntando/src/app_module.dart';
 import 'package:perguntando/src/login/login_module.dart';
 import 'package:perguntando/src/shared/blocs/auth_bloc.dart';
+import 'package:perguntando/src/shared/widgets/drawer/custom_list_tile.dart';
 import 'package:perguntando/src/splash/splash_page.dart';
 import 'package:meta/meta.dart';
 
@@ -14,25 +15,7 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   final bloc = AppModule.to.bloc<AuthBloc>();
-
-  Widget _listTile({String text = "",IconData icon = Icons.lightbulb_outline, bool selected = false, Function onTap}) {
-    return Container(
-      color: selected ? Colors.white : Colors.blue[800],
-      child: ListTile(
-        leading: Icon(
-          icon,
-          color: selected ? Colors.blue[800] : Colors.white,
-          size: 35,
-        ),
-        title: Text(
-          text.toUpperCase(),
-          style: TextStyle(color: selected ? Colors.blue[800] : Colors.white),
-        ),
-        onTap: selected ? null : onTap,
-      ),
-    );
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -75,8 +58,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             ),
                           );
                         }),
-                    _listTile(text: "Editar Conta", icon: Icons.person, onTap: (){}),
-                    _listTile(text: "Eventos", icon: Icons.event_available, selected: true),
+                    CustomListTile(text: "Editar Conta", icon: Icons.person, onTap: (){}),
+                    CustomListTile(text: "Eventos", icon: Icons.event_available, selected: true),
                   ],
                 ),
               ),
