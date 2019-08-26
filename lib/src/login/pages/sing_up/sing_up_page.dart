@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:perguntando/src/login/pages/sign_in/sign_in_bloc.dart';
+import 'package:perguntando/src/shared/widgets/circular_image/circular_image_widget.dart';
 import '../../login_bloc.dart';
 import '../../login_module.dart';
 import 'sing_up_bloc.dart';
@@ -36,18 +37,17 @@ class _SingUpPageState extends State<SingUpPage> {
                     }
                     if (snapshot.hasData && snapshot.data != 'loading') {
                       return Center(
-                        child: CircleAvatar(
-                          maxRadius: size.width * 0.2,
-                          minRadius: size.width * 0.2,
-                          backgroundImage: NetworkImage(snapshot.data),
+                        child: CircularImageWidget(
+                          icon: Icons.cloud_upload,
+                          imageUrl: snapshot.data,
+                          onPress: () => showUploadImageDialog(),
                         ),
                       );
                     }
-                    return CircleAvatar(
-                      maxRadius: size.width * 0.2,
-                      minRadius: size.width * 0.2,
-                      backgroundImage: NetworkImage(singUpBloc.imageUrl),
-                    );
+                    return CircularImageWidget(
+                        icon: Icons.add_a_photo,
+                        imageUrl: singUpBloc.imageUrl,
+                        onPress: () => showUploadImageDialog());
                   }),
               SizedBox(
                 height: 20,
@@ -248,116 +248,41 @@ class _SingUpPageState extends State<SingUpPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 50,
-                      child: TextField(
-                        onTap: () async {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          await showDialog(
-                            context: context,
-                            builder: (context) => StreamBuilder<String>(
-                                stream: singUpBloc.outPhoto,
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData &&
-                                      snapshot.data == 'loading') {
-                                    return AlertDialog(
-                                      title: Text(
-                                        'Aguarde...',
-                                        style:
-                                            TextStyle(color: Colors.blueGrey),
-                                      ),
-                                      content: Container(
-                                        padding: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.blueGrey),
-                                        ),
-                                        child: Center(
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                  return AlertDialog(
-                                    title: Text(
-                                      'Procure uma imagem',
-                                      style: TextStyle(color: Colors.blueGrey),
-                                    ),
-                                    content: Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        border:
-                                            Border.all(color: Colors.blueGrey),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          IconButton(
-                                            icon: Icon(
-                                              Icons.add_a_photo,
-                                              color: Colors.blue,
-                                            ),
-                                            iconSize: 60,
-                                            onPressed: () {
-                                              singUpBloc.setImageRegister(
-                                                  ImageSource.camera);
-                                            },
-                                          ),
-                                          IconButton(
-                                            icon: Icon(
-                                              Icons.add_photo_alternate,
-                                              color: Colors.blue,
-                                            ),
-                                            iconSize: 60,
-                                            onPressed: () {
-                                              singUpBloc.setImageRegister(
-                                                  ImageSource.gallery);
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                }),
-                          );
-                        },
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: Color(0xffA7A7A7),
-                        ),
-                        minLines: 1,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          alignLabelWithHint: false,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
-                          hasFloatingPlaceholder: true,
-                          hintText: 'Adicione uma imagem',
-                          hintStyle: TextStyle(color: Color(0xffA7A7A7)),
-                          suffixIcon: Icon(
-                            Icons.cloud_upload,
-                            color: Color(0xffA7A7A7),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
+                    SizedBox(height: 20),
+                    // Container(
+                    //   width: MediaQuery.of(context).size.width,
+                    //   height: 50,
+                    //   child: TextField(
+                    //     onTap: () => showUploadImageDialog(),
+                    //     maxLines: 1,
+                    //     style: TextStyle(
+                    //       color: Color(0xffA7A7A7),
+                    //     ),
+                    //     minLines: 1,
+                    //     textAlign: TextAlign.center,
+                    //     decoration: InputDecoration(
+                    //       alignLabelWithHint: false,
+                    //       focusedBorder: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(30),
+                    //         borderSide:
+                    //             BorderSide(color: Colors.blue, width: 2),
+                    //       ),
+                    //       enabledBorder: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(30),
+                    //         borderSide:
+                    //             BorderSide(color: Colors.blue, width: 2),
+                    //       ),
+                    //       hasFloatingPlaceholder: true,
+                    //       hintText: 'Adicione uma imagem',
+                    //       hintStyle: TextStyle(color: Color(0xffA7A7A7)),
+                    //       suffixIcon: Icon(
+                    //         Icons.cloud_upload,
+                    //         color: Color(0xffA7A7A7),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    SizedBox(height: 30),
                     Container(
                       height: 46,
                       child: RaisedButton(
@@ -406,6 +331,72 @@ class _SingUpPageState extends State<SingUpPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void showUploadImageDialog() async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    await showDialog(
+      context: context,
+      builder: (context) => StreamBuilder<String>(
+          stream: singUpBloc.outPhoto,
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data == 'loading') {
+              return AlertDialog(
+                title: Text(
+                  'Aguarde...',
+                  style: TextStyle(color: Colors.blueGrey),
+                ),
+                content: Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blueGrey),
+                  ),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              );
+            }
+            return AlertDialog(
+              title: Text(
+                'Procure uma imagem',
+                style: TextStyle(color: Colors.blueGrey),
+              ),
+              content: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blueGrey),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(
+                        Icons.add_a_photo,
+                        color: Colors.blue,
+                      ),
+                      iconSize: 60,
+                      onPressed: () {
+                        singUpBloc.setImageRegister(ImageSource.camera);
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.add_photo_alternate,
+                        color: Colors.blue,
+                      ),
+                      iconSize: 60,
+                      onPressed: () {
+                        singUpBloc.setImageRegister(ImageSource.gallery);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
     );
   }
 }
