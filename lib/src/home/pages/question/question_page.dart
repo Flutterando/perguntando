@@ -63,6 +63,7 @@ class _QuestionPageState extends State<QuestionPage> {
           return ListView.builder(
             controller: scrollController,
             itemCount: snapshot.data.length,
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.3),
             itemBuilder: (_, index) {
               return QuestionCard(
                 lectureQuestionModel: snapshot.data[index],
