@@ -223,7 +223,7 @@ class _SignInPageState extends State<SignInPage> {
                             );
                           }
                           return SizedBox(
-                            height: 50,
+                            height: 30,
                           );
                         }),
                     Container(
@@ -249,13 +249,16 @@ class _SignInPageState extends State<SignInPage> {
                               duration: Duration(milliseconds: 1000),
                               curve: Curves.bounceOut);
                         },
-                        child: Text(
-                          "cadastre-se agora",
-                          style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Color(0xffA7A7A7),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400),
+                        child: Padding(
+                          padding: const EdgeInsets.all(3),
+                          child: Text(
+                            "cadastre-se agora",
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: Color(0xffA7A7A7),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400),
+                          ),
                         ),
                       ),
                     ),

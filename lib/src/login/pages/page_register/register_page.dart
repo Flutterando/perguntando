@@ -179,13 +179,16 @@ class _RegisterPageState extends State<RegisterPage> {
                               duration: Duration(milliseconds: 1000),
                               curve: Curves.bounceOut);
                         },
-                        child: Text(
-                          "voltar para o login",
-                          style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Color(0xffA7A7A7),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400),
+                        child: Padding(
+                          padding: const EdgeInsets.all(3),
+                          child: Text(
+                            "voltar para o login",
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: Color(0xffA7A7A7),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400),
+                          ),
                         ),
                       ),
                     )
