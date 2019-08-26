@@ -199,6 +199,3 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
-
-class PageRegisterBloc {
-}

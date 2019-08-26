@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:perguntando/src/home/pages/question/question_module.dart';
 import 'package:perguntando/src/shared/models/event/event_model.dart';
 import 'package:perguntando/src/shared/utils/multlerp.dart';
+import 'package:perguntando/src/shared/widgets/image_viewer/image_viewer_widget.dart';
 import 'package:perguntando/src/shared/widgets/scrollable_content/scrollable_content_widget.dart';
 import '../question/question_module.dart';
 import 'components/card_event.dart';
@@ -43,10 +44,18 @@ class _EventPageState extends State<EventPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             padding: const EdgeInsets.symmetric(horizontal: 20),
             children: <Widget>[
-              CircleAvatar(
-                maxRadius: 40,
-                backgroundImage: CachedNetworkImageProvider(
-                    "${widget.eventModel?.urlPhoto}"),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => ImageViewerWidget.network(widget.eventModel?.urlPhoto),
+                  );
+                },
+                child: CircleAvatar(
+                  maxRadius: 40,
+                  backgroundImage: CachedNetworkImageProvider(
+                      "${widget.eventModel?.urlPhoto}"),
+                ),
               ),
               Container(
                 height: 10,

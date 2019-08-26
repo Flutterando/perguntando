@@ -30,13 +30,20 @@ class _SignInPageState extends State<SignInPage> {
     authBloc.inUserState.add(NotAuthenticated());
   }
 
+  OutlineInputBorder outlineborder() {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+      borderSide: BorderSide(color: Colors.blue, width: 2),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.all(25),
+        padding: EdgeInsets.only(top: 25, left: 25, right: 25),
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: Column(
@@ -109,7 +116,6 @@ class _SignInPageState extends State<SignInPage> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      height: 50,
                       width: MediaQuery.of(context).size.width,
                       child: TextFormField(
                         validator: (v) {
@@ -130,16 +136,10 @@ class _SignInPageState extends State<SignInPage> {
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
+                          focusedBorder: outlineborder(),
+                          border: outlineborder(),
+                          enabledBorder: outlineborder(),
+                          disabledBorder: outlineborder(),
                           hasFloatingPlaceholder: false,
                           hintText: "email",
                           hintStyle: TextStyle(
@@ -152,7 +152,6 @@ class _SignInPageState extends State<SignInPage> {
                       height: 20,
                     ),
                     Container(
-                      height: 50,
                       width: MediaQuery.of(context).size.width,
                       child: TextFormField(
                         validator: (v) {
@@ -172,16 +171,10 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
+                          focusedBorder: outlineborder(),
+                          border: outlineborder(),
+                          enabledBorder: outlineborder(),
+                          disabledBorder: outlineborder(),
                           hasFloatingPlaceholder: false,
                           hintText: "password",
                           hintStyle: TextStyle(
@@ -260,6 +253,9 @@ class _SignInPageState extends State<SignInPage> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 25,
+              ),
             ],
           ),
         ),
@@ -277,27 +273,31 @@ class _SignInPageState extends State<SignInPage> {
       height: 30,
       width: isLoading ? 48 : 150,
       alignment: Alignment.center,
-      child: InkWell(
-        onTap: () async {
-          final result = await bloc.onLogin();
-          if (result)
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => HomeModule(),
-              ),
-            );
-        },
-        child: !isLoading
-            ? Text(
-                "ENTRAR",
-                textAlign: TextAlign.center,
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              )
-            : Padding(
-                padding: EdgeInsets.all(10),
-                child:
-                    CircularProgressIndicator(backgroundColor: Colors.white)),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: bloc.onLogin,
+          child: !isLoading
+              ? Container(
+                  width: 150,
+                  height: 50,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(40)),
+                  child: Center(
+                    child: Text(
+                      "ENTRAR",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: EdgeInsets.all(10),
+                  child:
+                      CircularProgressIndicator(backgroundColor: Colors.white)),
+        ),
       ),
     );
   }
