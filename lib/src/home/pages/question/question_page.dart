@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hasura_connect/hasura_connect.dart';
 import 'package:perguntando/src/home/pages/question/components/question_card.dart';
 import 'package:perguntando/src/home/pages/question/components/custom_appbar.dart';
 import 'package:perguntando/src/home/pages/new_question/new_question.dart';
