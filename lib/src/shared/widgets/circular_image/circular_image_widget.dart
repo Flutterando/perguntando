@@ -29,7 +29,7 @@ class CircularImageWidget extends StatelessWidget {
         tag: imageUrl,
         child: CircleAvatar(
           radius: size,
-          child: Stack(alignment: Alignment.center, children: <Widget>[
+          child: Stack(alignment: Alignment.bottomCenter, children: <Widget>[
             Material(
               color: Colors.transparent,
               shape: CircleBorder(),

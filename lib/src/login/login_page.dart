@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:perguntando/src/login/login_module.dart';
 import 'login_bloc.dart';
+import 'pages/check_mail/check_mail_page.dart';
 import 'pages/sign_in/sign_in_page.dart';
 import 'pages/sing_up/sing_up_page.dart';
 
@@ -57,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
           PageView(
             physics: NeverScrollableScrollPhysics(),
             controller: bloc.pageController,
-            children: <Widget>[SignInPage(), SingUpPage()],
+            children: <Widget>[SignInPage(), SingUpPage(),CheckMailPage()],
           ),         
         ],
       ),

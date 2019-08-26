@@ -48,14 +48,18 @@ class _SingUpPageState extends State<SingUpPage> {
                         child: CircularImageWidget(
                           icon: Icons.cloud_upload,
                           imageUrl: snapshot.data,
-                          onPress: () => showUploadImageDialog(),
+                          onPress: () async {
+                            showUploadImageDialog();
+                          },
                         ),
                       );
                     }
                     return CircularImageWidget(
                         icon: Icons.add_a_photo,
                         imageUrl: singUpBloc.imageUrl,
-                        onPress: () => showUploadImageDialog());
+                        onPress: () async {
+                          showUploadImageDialog();
+                        });
                   }),
               SizedBox(
                 height: 20,
@@ -272,7 +276,9 @@ class _SingUpPageState extends State<SingUpPage> {
                       child: RaisedButton(
                         shape: StadiumBorder(),
                         color: Colors.blue,
-                        onPressed: () {},
+                        onPressed: () {
+                          singUpBloc.onSingUp();
+                        },
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 40),
                           child: Text(
@@ -318,7 +324,7 @@ class _SingUpPageState extends State<SingUpPage> {
     );
   }
 
-  void showUploadImageDialog() async {
+  Future<void> showUploadImageDialog() async {
     FocusScope.of(context).requestFocus(FocusNode());
     await showDialog(
       context: context,
@@ -360,8 +366,9 @@ class _SingUpPageState extends State<SingUpPage> {
                         color: Colors.blue,
                       ),
                       iconSize: 60,
-                      onPressed: () {
-                        singUpBloc.setImageRegister(ImageSource.camera);
+                      onPressed: () async {
+                        await singUpBloc.setImageRegister(ImageSource.camera);
+                        Navigator.pop(context);
                       },
                     ),
                     IconButton(
@@ -370,8 +377,9 @@ class _SingUpPageState extends State<SingUpPage> {
                         color: Colors.blue,
                       ),
                       iconSize: 60,
-                      onPressed: () {
-                        singUpBloc.setImageRegister(ImageSource.gallery);
+                      onPressed: () async {
+                        await singUpBloc.setImageRegister(ImageSource.gallery);
+                        Navigator.pop(context);
                       },
                     ),
                   ],
