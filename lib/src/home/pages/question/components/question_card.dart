@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:perguntando/src/app_module.dart';
 import 'package:perguntando/src/home/pages/question/question_module.dart';
-import 'package:perguntando/src/shared/blocs/auth_bloc.dart';
 import 'package:perguntando/src/shared/models/lecture_question_model.dart';
 import 'package:perguntando/src/shared/utils/date_utils.dart';
+import 'package:perguntando/src/shared/widgets/image_viewer/image_viewer_widget.dart';
 
 import '../question_bloc.dart';
 
@@ -45,11 +45,20 @@ class _QuestionCardState extends State<QuestionCard> {
                         onTap: () {
                           Scaffold.of(context).openDrawer();
                         },
-                        child: CircleAvatar(
-                            maxRadius: 23,
-                            backgroundImage: CachedNetworkImageProvider(
-                              "${widget?.lectureQuestionModel?.user?.photo}",
-                            )),
+                        child: GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  ImageViewerWidget.network(widget?.lectureQuestionModel?.user?.photo),
+                            );
+                          },
+                          child: CircleAvatar(
+                              maxRadius: 23,
+                              backgroundImage: CachedNetworkImageProvider(
+                                "${widget?.lectureQuestionModel?.user?.photo}",
+                              )),
+                        ),
                       ),
                     ),
                     Column(
