@@ -4,8 +4,10 @@ import 'dart:convert';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:dio/dio.dart';
 import 'package:perguntando/src/app_module.dart';
+
 import 'package:perguntando/src/shared/models/user_model.dart';
 import 'package:perguntando/src/shared/models/user_state.dart';
+import 'package:perguntando/src/shared/notification/notification_app.dart';
 import 'package:perguntando/src/shared/repositories/auth_repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,6 +38,7 @@ class AuthBloc extends BlocBase {
         _userController.add(userModel);
         sharedPreferences.setString('token', token);
         sharedPreferences.setString('user', jsonEncode(userModel.toJson()));
+       await AppModule.to.getDependency<NotificationApp>().setEmail(email: userModel.email);
         return true;
       } catch (e) {
         return false;
@@ -53,6 +56,7 @@ class AuthBloc extends BlocBase {
       await sharedPreferences.remove('user');
       await sharedPreferences.remove('token');
       await sharedPreferences.remove('credentials');
+      AppModule.to.getDependency<NotificationApp>().logoutEmail();
     } catch (e) {}
   }
 
