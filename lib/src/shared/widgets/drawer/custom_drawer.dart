@@ -3,6 +3,7 @@ import 'package:perguntando/src/app_module.dart';
 import 'package:perguntando/src/login/login_module.dart';
 import 'package:perguntando/src/shared/blocs/auth_bloc.dart';
 import 'package:perguntando/src/splash/splash_page.dart';
+import 'package:meta/meta.dart';
 
 import '../../models/user_model.dart';
 
@@ -13,6 +14,25 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   final bloc = AppModule.to.bloc<AuthBloc>();
+
+  Widget _listTile({String text = "",IconData icon = Icons.lightbulb_outline, bool selected = false, Function onTap}) {
+    return Container(
+      color: selected ? Colors.white : Colors.blue[800],
+      child: ListTile(
+        leading: Icon(
+          icon,
+          color: selected ? Colors.blue[800] : Colors.white,
+          size: 35,
+        ),
+        title: Text(
+          text.toUpperCase(),
+          style: TextStyle(color: selected ? Colors.blue[800] : Colors.white),
+        ),
+        onTap: selected ? null : onTap,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -55,28 +75,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             ),
                           );
                         }),
-                    ListTile(
-                      leading: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                        size: 35,
-                      ),
-                      title: Text(
-                        "EDITAR CONTA",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.event_available,
-                        color: Colors.white,
-                        size: 35,
-                      ),
-                      title: Text(
-                        "EVENTOS",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
+                    _listTile(text: "Editar Conta", icon: Icons.person, onTap: (){}),
+                    _listTile(text: "Eventos", icon: Icons.event_available, selected: true),
                   ],
                 ),
               ),
