@@ -31,6 +31,7 @@ class AppWidget extends StatelessWidget {
     _setOrientation();
     _initOneSignal();
     final bloc = AppModule.to.bloc<AuthBloc>();
+   
 
     return MaterialApp(
       title: 'Perguntando',
