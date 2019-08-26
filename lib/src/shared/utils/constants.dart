@@ -1,2 +1,2 @@
-const String API_URL = 'http://perguntando.flutterando.com.br:9090';
+const String API_URL = 'https://perguntando.flutterando.com.br';
 const String HASURA_URL = '$API_URL/hasura/v1/graphql';

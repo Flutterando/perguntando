@@ -6,17 +6,19 @@ import 'bottom_clipper.dart';
 class BottomWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BottomClipShadowPath(
-        shadow: Shadow(
-          color: Colors.black.withOpacity(.3),
-          blurRadius: 8,
-        ),
-        clipper: BottomClipper(),
-        child: Container(
-          height: 75,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(color: Color(0xFFF8F8F8)),
+    return BottomClipShadowPath(
+      shadow: Shadow(
+        color: Colors.black.withOpacity(.3),
+        blurRadius: 8,
+      ),
+      clipper: BottomClipper(),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10),
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(color: Color(0xFFF8F8F8)),
+        child: SafeArea(
+          bottom: true,
+          top: false,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

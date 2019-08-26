@@ -61,6 +61,7 @@ class CardWidget extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
+                              SizedBox(height: 3,),
                               Text(
                                 subtitle,
                                 textAlign: TextAlign.center,
@@ -69,6 +70,7 @@ class CardWidget extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                               ),
+                              SizedBox(height: 3,),
                               Text(
                                 date ?? "",
                                 textAlign: TextAlign.center,
