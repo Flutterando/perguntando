@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:perguntando/src/shared/models/user_model.dart';
 import 'package:perguntando/src/shared/utils/constants.dart';
@@ -42,7 +43,13 @@ class SingUpBloc extends BlocBase {
 
   Future<File> getImageFile(ImageSource imageSource) async {
     final _imageFile = await ImagePicker.pickImage(source: imageSource);
-    return _imageFile;
+    final _result = await FlutterImageCompress.compressAndGetFile(
+      _imageFile.absolute.path,
+      _imageFile.absolute.path,
+      format: CompressFormat.jpeg,
+      quality: 60,
+    );
+    return _result;
   }
 
   Future<String> uploadImageFile(File _imageFile) async {
