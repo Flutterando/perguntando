@@ -92,6 +92,10 @@ class _QuestionPageState extends State<QuestionPage> {
                   return FloatingActionButton(
                     heroTag: UniqueKey().toString(),
                     backgroundColor: Theme.of(context).primaryColor,
+                    tooltip:
+                        (snapshot.data == FilterQuestionOrdination.LIKE_MORE)
+                            ? 'Por Data'
+                            : 'Mais Curtidas',
                     onPressed: () {
                       questionBloc?.setFilter(
                         (snapshot.data == FilterQuestionOrdination.LIKE_MORE)
@@ -101,34 +105,35 @@ class _QuestionPageState extends State<QuestionPage> {
                       floatingButtonKey.currentState.close();
                     },
                     child: Icon(
-                      (snapshot.data == FilterQuestionOrdination.LIKE_MORE)
-                          ? FontAwesomeIcons.calendarAlt
-                          : FontAwesomeIcons.handSpock,
-                    ),
+                        (snapshot.data == FilterQuestionOrdination.LIKE_MORE)
+                            ? FontAwesomeIcons.calendarAlt
+                            : FontAwesomeIcons.handSpock),
                   );
                 } else {
                   return Container();
                 }
               }),
-          // ANCHOR  quando o filtro de 'my_questions' é selecionado ele oculta os outros filtros
           StreamBuilder<FilterQuestionOrdination>(
               stream: questionBloc.typeFilterOut,
               builder: (context, snapshot) {
                 return FloatingActionButton(
-                  heroTag: UniqueKey().toString(),
-                  backgroundColor: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    questionBloc?.setFilter(
+                    heroTag: UniqueKey().toString(),
+                    tooltip:
                         (snapshot.data == FilterQuestionOrdination.MY_QUESTIONS)
-                            ? FilterQuestionOrdination.BY_DATE
-                            : FilterQuestionOrdination.MY_QUESTIONS);
-                    floatingButtonKey.currentState.close();
-                  },
-                  child: Icon(
-                      (snapshot.data == FilterQuestionOrdination.MY_QUESTIONS)
-                          ? Icons.clear
-                          : FontAwesomeIcons.user),
-                );
+                            ? 'Limpar'
+                            : 'Minhas Perguntas',
+                    backgroundColor: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      questionBloc?.setFilter((snapshot.data ==
+                              FilterQuestionOrdination.MY_QUESTIONS)
+                          ? FilterQuestionOrdination.BY_DATE
+                          : FilterQuestionOrdination.MY_QUESTIONS);
+                      floatingButtonKey.currentState.close();
+                    },
+                    child: Icon(
+                        (snapshot.data == FilterQuestionOrdination.MY_QUESTIONS)
+                            ? Icons.clear
+                            : FontAwesomeIcons.user));
               }),
           FloatingActionButton(
               heroTag: UniqueKey().toString(),
@@ -152,6 +157,26 @@ class _QuestionPageState extends State<QuestionPage> {
         useOpacity: true,
         curveAnim: Curves.ease,
       ),
+    );
+  }
+
+  Widget _iconFloatingButton(String text, {IconData icon}) {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Icon(
+          icon,
+          size: 15,
+        ),
+        SizedBox(height: 4),
+        Text(
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 6),
+        )
+      ],
     );
   }
 }
