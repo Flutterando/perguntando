@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:perguntando/src/shared/widgets/image_viewer/image_viewer_widget.dart';
 import '../question_module.dart';
 import '../question_bloc.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double size;
-  
+
   CustomAppBar({@required this.size});
 
   @override
@@ -32,11 +33,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 BackButton(color: Theme.of(context).primaryColor),
                 Hero(
                   tag: "${questionBloc.tag}_image",
-                  child: CircleAvatar(
-                      maxRadius: 25,
-                      backgroundImage: CachedNetworkImageProvider(
-                        "${questionBloc.lecture.presenter.photo}}",
-                      )),
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => ImageViewerWidget.network(
+                            questionBloc.lecture.presenter.photo),
+                      );
+                    },
+                    child: CircleAvatar(
+                        maxRadius: 25,
+                        backgroundImage: CachedNetworkImageProvider(
+                          "${questionBloc.lecture.presenter.photo}}",
+                        )),
+                  ),
                 ),
                 Expanded(
                   child: Container(

@@ -26,10 +26,15 @@ class _SplashPageState extends State<SplashPage> {
       );
     }
   }
+  
+  @override
+  void initState() {
+    super.initState();
+    checkLogin();
+  }
 
   @override
   Widget build(BuildContext context) {
-    checkLogin();
 
     return Material(
       color: Theme.of(context).primaryColor,

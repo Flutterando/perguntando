@@ -30,13 +30,20 @@ class _SignInPageState extends State<SignInPage> {
     authBloc.inUserState.add(NotAuthenticated());
   }
 
+  OutlineInputBorder outlineborder() {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+      borderSide: BorderSide(color: Colors.blue, width: 2),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.all(25),
+        padding: EdgeInsets.only(top: 25, left: 25, right: 25),
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: Column(
@@ -109,7 +116,6 @@ class _SignInPageState extends State<SignInPage> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      height: 50,
                       width: MediaQuery.of(context).size.width,
                       child: TextFormField(
                         validator: (v) {
@@ -130,16 +136,10 @@ class _SignInPageState extends State<SignInPage> {
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           alignLabelWithHint: true,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
+                          focusedBorder: outlineborder(),
+                          border: outlineborder(),
+                          enabledBorder: outlineborder(),
+                          disabledBorder: outlineborder(),
                           hasFloatingPlaceholder: false,
                           hintText: "email",
                           hintStyle: TextStyle(
@@ -152,7 +152,6 @@ class _SignInPageState extends State<SignInPage> {
                       height: 20,
                     ),
                     Container(
-                      height: 50,
                       width: MediaQuery.of(context).size.width,
                       child: TextFormField(
                         validator: (v) {
@@ -172,16 +171,10 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2),
-                          ),
+                          focusedBorder: outlineborder(),
+                          border: outlineborder(),
+                          enabledBorder: outlineborder(),
+                          disabledBorder: outlineborder(),
                           hasFloatingPlaceholder: false,
                           hintText: "password",
                           hintStyle: TextStyle(
@@ -221,7 +214,7 @@ class _SignInPageState extends State<SignInPage> {
                             );
                           }
                           return SizedBox(
-                            height: 50,
+                            height: 30,
                           );
                         }),
                     Container(
@@ -247,18 +240,24 @@ class _SignInPageState extends State<SignInPage> {
                               duration: Duration(milliseconds: 1000),
                               curve: Curves.bounceOut);
                         },
-                        child: Text(
-                          "cadastre-se agora",
-                          style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Color(0xffA7A7A7),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400),
+                        child: Padding(
+                          padding: const EdgeInsets.all(3),
+                          child: Text(
+                            "cadastre-se agora",
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: Color(0xffA7A7A7),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400),
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
+              ),
+              SizedBox(
+                height: 25,
               ),
             ],
           ),

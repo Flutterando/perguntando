@@ -11,13 +11,19 @@ class QuestionBloc extends BlocBase {
   final LectureModel lecture;
   final HasuraRepository _hasuraRepository;
   final UserModel user;
-  int page = 2;
+  
+  int page;
 
   Snapshot<List<LectureQuestionModel>> _snapshot;
 
   QuestionBloc(this.tag, this.lecture, this._hasuraRepository, this.user) {
-    _snapshot =
-        _hasuraRepository.getQuestionLectures(lecture: lecture, user: user);
+    page = 2;
+    _snapshot = _hasuraRepository.getQuestionLectures(lecture: lecture, user: user);
+    _snapshot.changeVariable({
+      'id_lecture': lecture.idLecture,
+      'id_user': user.idUser,
+      'limit': page * 10,
+    });
   }
 
   Observable<List<LectureQuestionModel>> get questions =>

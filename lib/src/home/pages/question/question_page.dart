@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:perguntando/src/home/pages/question/components/question_card.dart';
 import 'package:perguntando/src/home/pages/question/components/custom_appbar.dart';
@@ -54,9 +55,20 @@ class _QuestionPageState extends State<QuestionPage> {
             );
           }
 
+          if (snapshot.data.length < 1) {
+            return Center(
+              child: Text(
+                "Ainda não tem perguntas aqui, seja o primeiro!",
+                softWrap: true,
+              ),
+            );
+          }
+
           return ListView.builder(
             controller: scrollController,
             itemCount: snapshot.data.length,
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height * 0.3),
             itemBuilder: (_, index) {
               return QuestionCard(
                 lectureQuestionModel: snapshot.data[index],
