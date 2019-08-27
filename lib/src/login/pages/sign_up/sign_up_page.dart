@@ -31,9 +31,11 @@ class _SignUpPageState extends State<SignUpPage> {
       duration: Duration(milliseconds: 200),
       curve: Curves.easeInOut,
       decoration: BoxDecoration(
-          color: Colors.blue, borderRadius: BorderRadius.circular(40)),
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(40),
+      ),
       height: 30,
-      width: isLoading ? 48 : 150,
+      width: 150,
       alignment: Alignment.center,
       child: Material(
         color: Colors.transparent,
@@ -262,9 +264,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         stream: singUpBloc.outLoading,
                         initialData: false,
                         builder: (context, snapshot) {
-                          if (snapshot.data) {
-                            return _buttonRegister(snapshot.data);
-                          }
                           return _buttonRegister(snapshot.data);
                         },
                       ),

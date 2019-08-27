@@ -55,12 +55,18 @@ class CircularImageWidget extends StatelessWidget {
               ),
               if (icon != null)
                 IgnorePointer(
-                  child: Icon(icon, size: iconSize, color: Colors.white,),
+                  child: Icon(
+                    icon,
+                    size: iconSize,
+                    color: Colors.white,
+                  ),
                 ),
             ],
           ),
           backgroundImage: (imageUrl == null) ? null : NetworkImage(imageUrl),
-          backgroundColor: (imageUrl == null) ? Colors.grey[400] : Colors.transparent,
+          backgroundColor: (imageUrl == null)
+              ? Theme.of(context).primaryColor.withOpacity(0.8)
+              : Colors.transparent,
         ),
       ),
     );

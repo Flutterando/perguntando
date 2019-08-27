@@ -271,7 +271,9 @@ class _SignInPageState extends State<SignInPage> {
       duration: Duration(milliseconds: 200),
       curve: Curves.easeInOut,
       decoration: BoxDecoration(
-          color: Colors.blue, borderRadius: BorderRadius.circular(40)),
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(40),
+      ),
       height: 30,
       width: isLoading ? 48 : 150,
       alignment: Alignment.center,
@@ -279,7 +281,7 @@ class _SignInPageState extends State<SignInPage> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          onTap: (){
+          onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
             signInBloc.onLogin();
           },
