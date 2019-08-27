@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:perguntando/src/app_module.dart';
 import 'package:perguntando/src/login/login_module.dart';
 import 'package:perguntando/src/shared/blocs/auth_bloc.dart';
+import 'package:perguntando/src/shared/widgets/drawer/custom_list_tile.dart';
 import 'package:perguntando/src/splash/splash_page.dart';
+import 'package:meta/meta.dart';
 
 import '../../models/user_model.dart';
 
@@ -13,6 +15,7 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   final bloc = AppModule.to.bloc<AuthBloc>();
+  
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -55,28 +58,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             ),
                           );
                         }),
-                    ListTile(
-                      leading: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                        size: 35,
-                      ),
-                      title: Text(
-                        "EDITAR CONTA",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.event_available,
-                        color: Colors.white,
-                        size: 35,
-                      ),
-                      title: Text(
-                        "EVENTOS",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
+                    CustomListTile(text: "Editar Conta", icon: Icons.person, onTap: (){}),
+                    CustomListTile(text: "Eventos", icon: Icons.event_available, selected: true),
                   ],
                 ),
               ),
