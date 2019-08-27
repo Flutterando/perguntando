@@ -62,7 +62,9 @@ class _QuestionPageState extends State<QuestionPage> {
           if (snapshot.data.length < 1) {
             return Center(
               child: Text(
-                "Ainda não tem perguntas aqui, seja o primeiro!",
+                (questionBloc.filter == FilterQuestionOrdination.MY_QUESTIONS)
+                    ? 'Você ainda não realizou nenhuma pergunta'
+                    : "Ainda não tem perguntas aqui, seja o primeiro!",
                 softWrap: true,
               ),
             );
@@ -86,24 +88,29 @@ class _QuestionPageState extends State<QuestionPage> {
           StreamBuilder<FilterQuestionOrdination>(
               stream: questionBloc.typeFilterOut,
               builder: (context, snapshot) {
-                return FloatingActionButton(
-                  heroTag: UniqueKey().toString(),
-                  backgroundColor: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    questionBloc?.setFilter(
+                if (snapshot.data != FilterQuestionOrdination.MY_QUESTIONS) {
+                  return FloatingActionButton(
+                    heroTag: UniqueKey().toString(),
+                    backgroundColor: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      questionBloc?.setFilter(
+                        (snapshot.data == FilterQuestionOrdination.LIKE_MORE)
+                            ? FilterQuestionOrdination.BY_DATE
+                            : FilterQuestionOrdination.LIKE_MORE,
+                      );
+                      floatingButtonKey.currentState.close();
+                    },
+                    child: Icon(
                       (snapshot.data == FilterQuestionOrdination.LIKE_MORE)
-                          ? FilterQuestionOrdination.BY_DATE
-                          : FilterQuestionOrdination.LIKE_MORE,
-                    );
-                    floatingButtonKey.currentState.close();
-                  },
-                  child: Icon(
-                    (snapshot.data == FilterQuestionOrdination.LIKE_MORE)
-                        ? FontAwesomeIcons.calendar
-                        : FontAwesomeIcons.thumbsUp,
-                  ),
-                );
+                          ? FontAwesomeIcons.calendarAlt
+                          : FontAwesomeIcons.handSpock,
+                    ),
+                  );
+                } else {
+                  return Container();
+                }
               }),
+          // ANCHOR  quando o filtro de 'my_questions' é selecionado ele oculta os outros filtros
           StreamBuilder<FilterQuestionOrdination>(
               stream: questionBloc.typeFilterOut,
               builder: (context, snapshot) {
@@ -111,7 +118,6 @@ class _QuestionPageState extends State<QuestionPage> {
                   heroTag: UniqueKey().toString(),
                   backgroundColor: Theme.of(context).primaryColor,
                   onPressed: () {
-                    // ANCHOR  pegar a ultima snapshot para voltar para ela
                     questionBloc?.setFilter(
                         (snapshot.data == FilterQuestionOrdination.MY_QUESTIONS)
                             ? FilterQuestionOrdination.BY_DATE
@@ -121,7 +127,7 @@ class _QuestionPageState extends State<QuestionPage> {
                   child: Icon(
                       (snapshot.data == FilterQuestionOrdination.MY_QUESTIONS)
                           ? Icons.clear
-                          : FontAwesomeIcons.comment),
+                          : FontAwesomeIcons.user),
                 );
               }),
           FloatingActionButton(

@@ -152,7 +152,7 @@ class HasuraRepository extends Disposable {
 
     if(type == FilterQuestionOrdination.MY_QUESTIONS){
       orderBy = 'lecture_question_likeds_aggregate: {count: desc}';
-      where = 'id_user: {_eq: 3}';
+      where = 'id_user: {_eq: \$id_user}';
     } else if(type == FilterQuestionOrdination.BY_DATE) {
       orderBy = 'info_date: desc';
       where = '';
