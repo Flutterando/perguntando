@@ -18,8 +18,22 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final _key = GlobalKey<FormState>();
   AuthBloc _authBloc = AppModule.to.getBloc<AuthBloc>();
-
   ProfileBloc _profileBloc = ProfileModule.to.getBloc<ProfileBloc>();
+
+StreamSubscription _subscription;
+
+@override
+  void initState() {
+    _subscription = _profileBloc.submit.listen((e) => Navigator.pop(context));
+    super.initState();
+  }
+
+@override
+void dispose() { 
+  _subscription.cancel();
+  super.dispose();
+}
+
 
   void dialog({String title, String content}) {
     showDialog(
@@ -192,6 +206,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: Colors.blue,
                   onPressed: () {
                     _key.currentState.save();
+                   
                   },
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40),

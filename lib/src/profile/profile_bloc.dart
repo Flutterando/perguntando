@@ -35,17 +35,18 @@ class ProfileBloc extends BlocBase with Validator {
           .map((e) => e.isNotEmpty ? _authRepository.generateMd5(e) as String : e)
           .asBroadcastStream();
 
-  Observable
+ submit = Observable
         .zip2<String,String,ProfileDto>
         (validName, comparePassword, (name,password) => ProfileDto(name, password))
-        .asyncMap((e) => _profileRepository.updateUser(e))
-        ..listen(null);
+        .asyncMap((e) => _profileRepository.updateUser(e));
 
   }
- Observable<String> comparePassword;
+  Observable<String> comparePassword;
   Observable<String> validName;
   Observable<String> validPassword;
   Observable<String> validRePassword;
+  Observable submit;
+
 
   void nameEvent(String name) => _name.add(name);
   void passwordEvent(String password) => _password.add(password);
