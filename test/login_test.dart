@@ -5,7 +5,7 @@ main() {
   test('Login Test', () async {
     AuthRepository authRepository = AuthRepository();
     var token = await authRepository.getToken(
-        'alvaro@flutterando.com.br', '123456789');
+        'denastre@gmail.com', '123456789',isTest: true);
     print(token);
   });
 }

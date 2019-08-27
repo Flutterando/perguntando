@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:perguntando/src/login/login_module.dart';
 import 'login_bloc.dart';
+import 'pages/check_mail/check_mail_page.dart';
 import 'pages/sign_in/sign_in_page.dart';
-import 'pages/sing_up/sing_up_page.dart';
+import 'pages/sign_up/sign_up_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,30 +13,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   var bloc = LoginModule.to.getBloc<LoginBloc>();
 
-  var itemsActionBar = [
-    FloatingActionButton(
-      heroTag: "ffreofkprj3093",
-      backgroundColor: Colors.greenAccent,
-      onPressed: () {},
-      child: Icon(Icons.add),
-    ),
-    FloatingActionButton(
-      heroTag: "dsad3e2fd2",
-      backgroundColor: Colors.indigoAccent,
-      onPressed: () {},
-      child: Icon(Icons.camera),
-    ),
-    FloatingActionButton(
-      heroTag: "4322fh6jk",
-      backgroundColor: Colors.orangeAccent,
-      onPressed: () {},
-      child: Icon(Icons.card_giftcard),
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: bloc.scaffoldKeySingInPage,
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
@@ -57,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
           PageView(
             physics: NeverScrollableScrollPhysics(),
             controller: bloc.pageController,
-            children: <Widget>[SignInPage(), SingUpPage()],
+            children: <Widget>[SignInPage(), SignUpPage(),CheckMailPage()],
           ),         
         ],
       ),
