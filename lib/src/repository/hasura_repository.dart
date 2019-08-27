@@ -1,6 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:hasura_connect/hasura_connect.dart';
+import 'package:perguntando/src/shared/models/enums.dart';
 import 'package:perguntando/src/shared/models/event/event_model.dart';
 import 'package:perguntando/src/shared/models/event/lecture_model.dart';
 import 'package:perguntando/src/shared/models/lecture_question_liked_model.dart';
@@ -142,17 +143,27 @@ class HasuraRepository extends Disposable {
   Snapshot<List<LectureQuestionModel>> getQuestionLectures({
     @required LectureModel lecture,
     @required UserModel user,
-    String type,
+    FilterQuestionOrdination type,
     int limit = 10,
   }) {
-    String orderby = (type == 'd')? 'info_date: desc' : 'lecture_question_likeds_aggregate: {count: desc}';
-    print('%%%%%%%%%%%%%%%%%%%%%%%%');
-    print(orderby);
-    print('%%%%%%%%%%%%%%%%%%%%%%%%');
+
+    String orderBy;
+    String where;
+
+    if(type == FilterQuestionOrdination.MY_QUESTIONS){
+      orderBy = 'lecture_question_likeds_aggregate: {count: desc}';
+      where = 'id_user: {_eq: 3}';
+    } else if(type == FilterQuestionOrdination.BY_DATE) {
+      orderBy = 'info_date: desc';
+      where = '';
+    } else {
+      orderBy = 'lecture_question_likeds_aggregate: {count: desc}';
+      where = '';
+    }
 
     var query =
-        '''subscription getQuestionLectures(\$id_lecture:Int!, \$id_user:Int!, \$limit: Int!, \$teste: String){
-                    lecture_question(where: {id_lecture: {_eq: \$id_lecture}}, order_by: {$orderby}, limit: \$limit) {
+        '''subscription getQuestionLectures(\$id_lecture:Int!, \$id_user:Int!, \$limit: Int!){
+                    lecture_question(where: {id_lecture: {_eq: \$id_lecture}, $where}, order_by: {$orderBy}, limit: \$limit) {
                       id_lecture_question
                       id_lecture
                       description
@@ -178,8 +189,7 @@ class HasuraRepository extends Disposable {
           variables: {
             'id_lecture': lecture.idLecture,
             'id_user': user.idUser,
-            'limit': limit,
-            'teste': ''
+            'limit': limit
           }).map((json) {
         var a =
             LectureQuestionModel.fromJsonList(json['data']['lecture_question']);

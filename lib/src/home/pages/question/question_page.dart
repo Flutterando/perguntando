@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:perguntando/src/home/pages/question/components/question_card.dart';
 import 'package:perguntando/src/home/pages/question/components/custom_appbar.dart';
 import 'package:perguntando/src/home/pages/new_question/new_question.dart';
 import 'package:perguntando/src/home/pages/question/question_bloc.dart';
 import 'package:perguntando/src/home/pages/question/question_module.dart';
+import 'package:perguntando/src/shared/models/enums.dart';
 import 'package:perguntando/src/shared/models/lecture_question_model.dart';
 import 'package:radial_button/widget/circle_floating_button.dart';
 
@@ -41,7 +43,7 @@ class _QuestionPageState extends State<QuestionPage> {
       key: scaffoldKey,
       appBar: CustomAppBar(size: 80),
       body: StreamBuilder<List<LectureQuestionModel>>(
-        stream: questionBloc.questions,
+        stream: questionBloc.filterOut,
         builder: (_, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -81,21 +83,47 @@ class _QuestionPageState extends State<QuestionPage> {
       ),
       floatingActionButton: CircleFloatingButton.floatingActionButton(
         items: <Widget>[
-          FloatingActionButton(
-            heroTag: UniqueKey().toString(),
-            backgroundColor: Theme.of(context).primaryColor,
-            onPressed: () {
-              questionBloc?.filter('d');
-              floatingButtonKey.currentState.close();
-            },
-            child: Icon(Icons.date_range),
-          ),
-          FloatingActionButton(
-            heroTag: UniqueKey().toString(),
-            backgroundColor: Theme.of(context).primaryColor,
-            onPressed: () => print(' -- MINHAS QUESTÕES'),
-            child: Icon(Icons.cached),
-          ),
+          StreamBuilder<FilterQuestionOrdination>(
+              stream: questionBloc.typeFilterOut,
+              builder: (context, snapshot) {
+                return FloatingActionButton(
+                  heroTag: UniqueKey().toString(),
+                  backgroundColor: Theme.of(context).primaryColor,
+                  onPressed: () {
+                    questionBloc?.setFilter(
+                      (snapshot.data == FilterQuestionOrdination.LIKE_MORE)
+                          ? FilterQuestionOrdination.BY_DATE
+                          : FilterQuestionOrdination.LIKE_MORE,
+                    );
+                    floatingButtonKey.currentState.close();
+                  },
+                  child: Icon(
+                    (snapshot.data == FilterQuestionOrdination.LIKE_MORE)
+                        ? FontAwesomeIcons.calendar
+                        : FontAwesomeIcons.thumbsUp,
+                  ),
+                );
+              }),
+          StreamBuilder<FilterQuestionOrdination>(
+              stream: questionBloc.typeFilterOut,
+              builder: (context, snapshot) {
+                return FloatingActionButton(
+                  heroTag: UniqueKey().toString(),
+                  backgroundColor: Theme.of(context).primaryColor,
+                  onPressed: () {
+                    // ANCHOR  pegar a ultima snapshot para voltar para ela
+                    questionBloc?.setFilter(
+                        (snapshot.data == FilterQuestionOrdination.MY_QUESTIONS)
+                            ? FilterQuestionOrdination.BY_DATE
+                            : FilterQuestionOrdination.MY_QUESTIONS);
+                    floatingButtonKey.currentState.close();
+                  },
+                  child: Icon(
+                      (snapshot.data == FilterQuestionOrdination.MY_QUESTIONS)
+                          ? Icons.clear
+                          : FontAwesomeIcons.comment),
+                );
+              }),
           FloatingActionButton(
               heroTag: UniqueKey().toString(),
               backgroundColor: Theme.of(context).primaryColor,
@@ -111,7 +139,7 @@ class _QuestionPageState extends State<QuestionPage> {
                 floatingButtonKey.currentState.close();
               }),
         ],
-        color: Colors.redAccent,
+        color: Theme.of(context).primaryColor,
         icon: Icons.menu,
         key: floatingButtonKey,
         duration: Duration(milliseconds: 100),

@@ -1,33 +1,44 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:perguntando/src/repository/hasura_repository.dart';
+import 'package:perguntando/src/shared/models/enums.dart';
 import 'package:perguntando/src/shared/models/event/lecture_model.dart';
 import 'package:perguntando/src/shared/models/lecture_question_model.dart';
 import 'package:perguntando/src/shared/models/user_model.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:uuid/uuid.dart';
 
 class QuestionBloc extends BlocBase {
   final String tag;
   final LectureModel lecture;
   final HasuraRepository _hasuraRepository;
   final UserModel user;
-  
+
   int page;
 
-  Snapshot<List<LectureQuestionModel>> _snapshot;
+  Snapshot<List<LectureQuestionModel>> _likeMoreSnapshot;
+  Snapshot<List<LectureQuestionModel>> _byDateSnapshot;
+  Snapshot<List<LectureQuestionModel>> _myQuestionsSnapshot;
+
+  Map<String, dynamic> _listagemInicial;
 
   QuestionBloc(this.tag, this.lecture, this._hasuraRepository, this.user) {
     page = 2;
-    _snapshot = _hasuraRepository.getQuestionLectures(lecture: lecture, user: user);
-    _snapshot.changeVariable({
+
+    _listagemInicial = {
       'id_lecture': lecture.idLecture,
       'id_user': user.idUser,
-      'limit': page * 10,
-    });
-  }
+      'limit': 1 * 10,
+    };
 
-  Observable<List<LectureQuestionModel>> get questions => Observable(_snapshot.stream);
+    _likeMoreSnapshot = _hasuraRepository.getQuestionLectures(
+        lecture: lecture, user: user, type: FilterQuestionOrdination.LIKE_MORE);
+    _byDateSnapshot = _hasuraRepository.getQuestionLectures(
+        lecture: lecture, user: user, type: FilterQuestionOrdination.BY_DATE);
+    _myQuestionsSnapshot = _hasuraRepository.getQuestionLectures(
+        lecture: lecture,
+        user: user,
+        type: FilterQuestionOrdination.MY_QUESTIONS);
+  }
 
   Future<bool> deleteLectureQuestion(
       LectureQuestionModel lectureQuestion) async {
@@ -36,44 +47,70 @@ class QuestionBloc extends BlocBase {
 
   Future<bool> like(LectureQuestionModel lectureQuestion) async {
     return await _hasuraRepository.createLectureQuestionLiked(
-        _snapshot, lectureQuestion, user.idUser);
+        _byDateSnapshot, lectureQuestion, user.idUser);
   }
 
   Future<bool> dislike(LectureQuestionModel lectureQuestionLikedModel) async {
     return await _hasuraRepository.deleteLectureQuestionLiked(
-        _snapshot, lectureQuestionLikedModel, user.idUser);
+        _byDateSnapshot, lectureQuestionLikedModel, user.idUser);
   }
 
-  final BehaviorSubject<String> typeStream = BehaviorSubject<String>.seeded('c');
-  String get numberQuestion => typeStream.value; 
-  Sink<String> get numberQuestionIn => typeStream.sink;
-  Observable<String> get numberQuestionOut =>  typeStream.stream;
+  final BehaviorSubject<FilterQuestionOrdination> filterStream =
+      BehaviorSubject<FilterQuestionOrdination>.seeded(
+          FilterQuestionOrdination.BY_DATE);
+  FilterQuestionOrdination get filter => filterStream.value;
+  Sink<FilterQuestionOrdination> get filterIn => filterStream.sink;
 
-  // ANCHOR  d - Data | c - Mais curtidas | p - Minhas perguntas
-  void filter(String type) {
-    page = 2;
-    _snapshot = _hasuraRepository.getQuestionLectures(lecture: lecture, user: user, type: type);
-    _snapshot.changeVariable({
-      'id_lecture': lecture.idLecture,
-      'id_user': user.idUser,
-      'limit': page * 10,
-      'teste': Uuid().v1().toString()
-    });
+  Observable<FilterQuestionOrdination> get typeFilterOut => filterStream.stream;
+  Observable<List<LectureQuestionModel>> get filterOut =>
+      filterStream.stream.where((data) => data != null).switchMap(mappers);
+
+  Stream<List<LectureQuestionModel>> mappers(
+      FilterQuestionOrdination data) async* {
+    switch (data) {
+      case FilterQuestionOrdination.LIKE_MORE:
+        yield* _likeMoreSnapshot.stream;
+        break;
+      case FilterQuestionOrdination.BY_DATE:
+        yield* _byDateSnapshot.stream;
+        break;
+      case FilterQuestionOrdination.MY_QUESTIONS:
+        yield* _myQuestionsSnapshot.stream;
+        break;
+    }
+  }
+
+  void setFilter(FilterQuestionOrdination type) {
+    filterStream.add(type);
+    _likeMoreSnapshot.changeVariable(_listagemInicial);
+    _byDateSnapshot.changeVariable(_listagemInicial);
+    _myQuestionsSnapshot.changeVariable(_listagemInicial);
   }
 
   @override
   void dispose() {
-    typeStream.close();
+    filterStream.close();
     super.dispose();
   }
 
   void getMoreQuestions() {
-    print(page);
-    _snapshot.changeVariable({
+    Map<String, dynamic> variable = {
       'id_lecture': lecture.idLecture,
       'id_user': user.idUser,
-      'limit': page * 10,      
-    });
+      'limit': page * 10,
+    };
+
+    switch (filter) {
+      case FilterQuestionOrdination.LIKE_MORE:
+        _likeMoreSnapshot.changeVariable(variable);
+        break;
+      case FilterQuestionOrdination.BY_DATE:
+        _byDateSnapshot.changeVariable(variable);
+        break;
+      case FilterQuestionOrdination.MY_QUESTIONS:
+        _myQuestionsSnapshot.changeVariable(variable);
+        break;
+    }
     page++;
   }
 }
