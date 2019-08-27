@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:perguntando/src/app_module.dart';
 import 'package:perguntando/src/login/login_module.dart';
+import 'package:perguntando/src/profile/profile_module.dart';
 import 'package:perguntando/src/shared/blocs/auth_bloc.dart';
 import 'package:perguntando/src/shared/widgets/drawer/custom_list_tile.dart';
 import 'package:perguntando/src/splash/splash_page.dart';
@@ -15,7 +16,7 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget> {
   final bloc = AppModule.to.bloc<AuthBloc>();
-  
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -58,8 +59,19 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             ),
                           );
                         }),
-                    CustomListTile(text: "Editar Conta", icon: Icons.person, onTap: (){}),
-                    CustomListTile(text: "Eventos", icon: Icons.event_available, selected: true),
+                    CustomListTile(
+                        text: "Editar Conta",
+                        icon: Icons.person,
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileModule()));
+                        }),
+                    CustomListTile(
+                        text: "Eventos",
+                        icon: Icons.event_available,
+                        selected: true),
                   ],
                 ),
               ),

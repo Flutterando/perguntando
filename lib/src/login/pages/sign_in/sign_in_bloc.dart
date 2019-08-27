@@ -21,7 +21,7 @@ class SignInBloc extends BlocBase {
 
   SignInBloc(this._authBloc, this._hasuraRepository);
 
-  void onLogin() async {
+  Future<bool> onLogin() async {
     SharedPreferences _sharedPreferences =
         await SharedPreferences.getInstance();
     FormState _formState = formKey.currentState;
@@ -35,10 +35,12 @@ class SignInBloc extends BlocBase {
         _sharedPreferences.setString('user', jsonEncode(response['user']));
         final user = UserModel.fromJson(response['user']);
         _authBloc.inUser.add(user);
+        return true;
       } on DioError catch (e) {
         _authBloc.inUserState.add(Error(e));
       }
     }
+    return false;
   }
 
   @override

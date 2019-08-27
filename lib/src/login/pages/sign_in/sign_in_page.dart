@@ -26,16 +26,7 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    authBloc.outUser.listen((v) {
-      if (v != null)
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => HomeModule(),
-          ),
-        );
-    });
     authBloc.inUserState.add(NotAuthenticated());
   }
 
@@ -285,34 +276,27 @@ class _SignInPageState extends State<SignInPage> {
       height: 30,
       width: isLoading ? 48 : 150,
       alignment: Alignment.center,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(20),
-          onTap: (){
-            FocusScope.of(context).requestFocus(FocusNode());
-            bloc.onLogin();
-          },
-          child: !isLoading
-              ? Container(
-                  width: 150,
-                  height: 50,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(40)),
-                  child: Center(
-                    child: Text(
-                      "ENTRAR",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                )
-              : Padding(
-                  padding: EdgeInsets.all(10),
-                  child:
-                      CircularProgressIndicator(backgroundColor: Colors.white)),
-        ),
+      child: InkWell(
+        onTap: () async {
+          final result = await bloc.onLogin();
+          if (result)
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => HomeModule(),
+              ),
+            );
+        },
+        child: !isLoading
+            ? Text(
+                "ENTRAR",
+                textAlign: TextAlign.center,
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              )
+            : Padding(
+                padding: EdgeInsets.all(10),
+                child:
+                    CircularProgressIndicator(backgroundColor: Colors.white)),
       ),
     );
   }
