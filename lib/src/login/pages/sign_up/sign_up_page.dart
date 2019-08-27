@@ -319,7 +319,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.blueGrey),
                 ),
-                child: CircularProgressIndicator(),
+                child: Container(
+                    height: size.height * .1,
+                    child: Center(child: CircularProgressIndicator())),
               ),
             );
           }
