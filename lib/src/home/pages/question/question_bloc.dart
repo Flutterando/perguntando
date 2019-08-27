@@ -5,6 +5,7 @@ import 'package:perguntando/src/shared/models/event/lecture_model.dart';
 import 'package:perguntando/src/shared/models/lecture_question_model.dart';
 import 'package:perguntando/src/shared/models/user_model.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:uuid/uuid.dart';
 
 class QuestionBloc extends BlocBase {
   final String tag;
@@ -56,6 +57,7 @@ class QuestionBloc extends BlocBase {
       'id_lecture': lecture.idLecture,
       'id_user': user.idUser,
       'limit': page * 10,
+      'teste': Uuid().v1().toString()
     });
   }
 

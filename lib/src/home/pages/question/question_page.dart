@@ -17,7 +17,8 @@ class QuestionPage extends StatefulWidget {
 class _QuestionPageState extends State<QuestionPage> {
   final questionBloc = QuestionModule.to.bloc<QuestionBloc>();
   var scaffoldKey = GlobalKey<ScaffoldState>();
-
+  GlobalKey<CircleFloatingButtonState> floatingButtonKey =
+      GlobalKey<CircleFloatingButtonState>();
   var scrollController = ScrollController();
 
   @override
@@ -81,25 +82,25 @@ class _QuestionPageState extends State<QuestionPage> {
       floatingActionButton: CircleFloatingButton.floatingActionButton(
         items: <Widget>[
           FloatingActionButton(
-            heroTag: 'orderby_date',
+            heroTag: UniqueKey().toString(),
             backgroundColor: Theme.of(context).primaryColor,
-            onPressed: () { 
+            onPressed: () {
               questionBloc?.filter('d');
+              floatingButtonKey.currentState.close();
             },
             child: Icon(Icons.date_range),
           ),
           FloatingActionButton(
-            heroTag: 'my_question',
+            heroTag: UniqueKey().toString(),
             backgroundColor: Theme.of(context).primaryColor,
             onPressed: () => print(' -- MINHAS QUESTÕES'),
             child: Icon(Icons.cached),
           ),
           FloatingActionButton(
-              heroTag: 'add_question',
+              heroTag: UniqueKey().toString(),
               backgroundColor: Theme.of(context).primaryColor,
               child: Icon(Icons.add),
               onPressed: () {
-                //TODO erro ao retornar
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -107,46 +108,16 @@ class _QuestionPageState extends State<QuestionPage> {
                     builder: (BuildContext context) => NewQuestionPage(),
                   ),
                 );
+                floatingButtonKey.currentState.close();
               }),
         ],
         color: Colors.redAccent,
         icon: Icons.menu,
-        duration: Duration(milliseconds: 1000),
+        key: floatingButtonKey,
+        duration: Duration(milliseconds: 100),
         useOpacity: true,
         curveAnim: Curves.ease,
       ),
-
-      /*
-      floatingActionButton: FloatingActionButton(
-        heroTag: "a",
-        backgroundColor: Theme.of(context).primaryColor,
-        child: Icon(
-          Icons.add,
-          size: 28,
-        ),
-        onPressed: () {
-          // Navigator.push(
-          //   context,
-          //   PageRouteBuilder(
-          //     transitionDuration: Duration(milliseconds: 500),
-          //     pageBuilder: (context, go, back) => NewQuestionPage(),
-          //     transitionsBuilder: (context, go, back, widget) => FadeTransition(
-          //       opacity: go,
-          //       child: widget,
-          //     ),
-          //   ),
-          // );
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (BuildContext context) => NewQuestionPage(),
-            ),
-          );
-        },
-      ),
-
-      */
     );
   }
 }

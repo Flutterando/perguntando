@@ -151,7 +151,7 @@ class HasuraRepository extends Disposable {
     print('%%%%%%%%%%%%%%%%%%%%%%%%');
 
     var query =
-        '''subscription getQuestionLectures(\$id_lecture:Int!, \$id_user:Int!, \$limit: Int!){
+        '''subscription getQuestionLectures(\$id_lecture:Int!, \$id_user:Int!, \$limit: Int!, \$teste: String){
                     lecture_question(where: {id_lecture: {_eq: \$id_lecture}}, order_by: {$orderby}, limit: \$limit) {
                       id_lecture_question
                       id_lecture
@@ -178,7 +178,8 @@ class HasuraRepository extends Disposable {
           variables: {
             'id_lecture': lecture.idLecture,
             'id_user': user.idUser,
-            'limit': limit
+            'limit': limit,
+            'teste': ''
           }).map((json) {
         var a =
             LectureQuestionModel.fromJsonList(json['data']['lecture_question']);

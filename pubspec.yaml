@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.4.0 <3.0.0"
 
 dependencies:
+  uuid: ^2.0.2
   intl: ^0.15.8
   encrypt: ^3.2.0
   cached_network_image: ^1.1.1
