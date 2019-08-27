@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:perguntando/src/shared/models/user_model.dart';
 import 'package:perguntando/src/shared/utils/constants.dart';
-import 'package:perguntando/src/shared/utils/convert_Md5.dart';
+import 'package:perguntando/src/shared/utils/convert.dart';
 
 main() {
   test('Registro test', () async {
