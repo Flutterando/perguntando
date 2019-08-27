@@ -37,32 +37,23 @@ class _SingUpPageState extends State<SingUpPage> {
           child: Column(
             children: <Widget>[
               StreamBuilder<String>(
-                  stream: singUpBloc.outPhoto,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Container(child: Text(snapshot.error.toString()));
-                    }
-                    if (snapshot.hasData && snapshot.data != 'loading') {
-                      return Center(
-                        child: CircularImageWidget(
-                          icon: Icons.cloud_upload,
-                          imageUrl: snapshot.data,
-                          onPress: () async {
-                            showUploadImageDialog();
-                          },
-                        ),
-                      );
-                    }
-                    return CircularImageWidget(
+                stream: singUpBloc.outPhoto,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError)
+                    return Container(child: Text(snapshot.error.toString()));
+                  else
+                    return Center(
+                      child: CircularImageWidget(
                         icon: Icons.add_a_photo,
-                        imageUrl: singUpBloc.imageUrl,
-                        onPress: () async {
-                          showUploadImageDialog();
-                        });
-                  }),
-              SizedBox(
-                height: 20,
+                        imageUrl: (snapshot.hasData && snapshot.data != 'loading')
+                                ? snapshot.data
+                                : null,
+                        onPress: showUploadImageDialog,
+                      ),
+                    );
+                },
               ),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -86,9 +77,7 @@ class _SingUpPageState extends State<SingUpPage> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 30,
-              ),
+              SizedBox(height: 30),
               Form(
                 autovalidate: true,
                 key: singUpBloc.singUpformKey,
@@ -110,9 +99,7 @@ class _SingUpPageState extends State<SingUpPage> {
                           }
                         },
                         maxLines: 1,
-                        style: TextStyle(
-                          color: Color(0xffA7A7A7),
-                        ),
+                        style: TextStyle(color: Color(0xffA7A7A7)),
                         minLines: 1,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
@@ -123,15 +110,11 @@ class _SingUpPageState extends State<SingUpPage> {
                           disabledBorder: outlineborder(),
                           hasFloatingPlaceholder: false,
                           labelText: "seu nome",
-                          labelStyle: TextStyle(
-                            color: Color(0xffA7A7A7),
-                          ),
+                          labelStyle: TextStyle(color: Color(0xffA7A7A7)),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
+                    SizedBox(height: 20),
                     Container(
                       height: 50,
                       width: size.width,
@@ -145,9 +128,7 @@ class _SingUpPageState extends State<SingUpPage> {
                           }
                         },
                         maxLines: 1,
-                        style: TextStyle(
-                          color: Color(0xffA7A7A7),
-                        ),
+                        style: TextStyle(color: Color(0xffA7A7A7)),
                         minLines: 1,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
@@ -158,15 +139,11 @@ class _SingUpPageState extends State<SingUpPage> {
                           disabledBorder: outlineborder(),
                           hasFloatingPlaceholder: false,
                           labelText: "seu email",
-                          labelStyle: TextStyle(
-                            color: Color(0xffA7A7A7),
-                          ),
+                          labelStyle: TextStyle(color: Color(0xffA7A7A7)),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
+                    SizedBox(height: 20),
                     Container(
                       width: size.width,
                       height: 50,
@@ -184,9 +161,7 @@ class _SingUpPageState extends State<SingUpPage> {
                           }
                         },
                         maxLines: 1,
-                        style: TextStyle(
-                          color: Color(0xffA7A7A7),
-                        ),
+                        style: TextStyle(color: Color(0xffA7A7A7)),
                         minLines: 1,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
@@ -197,15 +172,11 @@ class _SingUpPageState extends State<SingUpPage> {
                           disabledBorder: outlineborder(),
                           hasFloatingPlaceholder: false,
                           labelText: "digita sua senha",
-                          labelStyle: TextStyle(
-                            color: Color(0xffA7A7A7),
-                          ),
+                          labelStyle: TextStyle(color: Color(0xffA7A7A7)),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
+                    SizedBox(height: 20),
                     Container(
                       width: size.width,
                       height: 50,
@@ -216,9 +187,7 @@ class _SingUpPageState extends State<SingUpPage> {
                           }
                         },
                         maxLines: 1,
-                        style: TextStyle(
-                          color: Color(0xffA7A7A7),
-                        ),
+                        style: TextStyle(color: Color(0xffA7A7A7)),
                         minLines: 1,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
@@ -236,48 +205,13 @@ class _SingUpPageState extends State<SingUpPage> {
                       ),
                     ),
                     SizedBox(height: 20),
-                    // Container(
-                    //   width: MediaQuery.of(context).size.width,
-                    //   height: 50,
-                    //   child: TextField(
-                    //     onTap: () => showUploadImageDialog(),
-                    //     maxLines: 1,
-                    //     style: TextStyle(
-                    //       color: Color(0xffA7A7A7),
-                    //     ),
-                    //     minLines: 1,
-                    //     textAlign: TextAlign.center,
-                    //     decoration: InputDecoration(
-                    //       alignLabelWithHint: false,
-                    //       focusedBorder: OutlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(30),
-                    //         borderSide:
-                    //             BorderSide(color: Colors.blue, width: 2),
-                    //       ),
-                    //       enabledBorder: OutlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(30),
-                    //         borderSide:
-                    //             BorderSide(color: Colors.blue, width: 2),
-                    //       ),
-                    //       hasFloatingPlaceholder: true,
-                    //       hintText: 'Adicione uma imagem',
-                    //       hintStyle: TextStyle(color: Color(0xffA7A7A7)),
-                    //       suffixIcon: Icon(
-                    //         Icons.cloud_upload,
-                    //         color: Color(0xffA7A7A7),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     SizedBox(height: 30),
                     Container(
                       height: 46,
                       child: RaisedButton(
                         shape: StadiumBorder(),
                         color: Colors.blue,
-                        onPressed: () {
-                          singUpBloc.onSingUp();
-                        },
+                        onPressed: singUpBloc.onSingUp,
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 40),
                           child: Text(
@@ -290,9 +224,7 @@ class _SingUpPageState extends State<SingUpPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    SizedBox(height: 10),
                     Container(
                       padding: EdgeInsets.all(20),
                       child: GestureDetector(
@@ -300,16 +232,17 @@ class _SingUpPageState extends State<SingUpPage> {
                           loginBloc.pageController.animateToPage(
                             0,
                             duration: Duration(milliseconds: 1000),
-                            curve: Curves.bounceOut,
+                            curve: Curves.ease,
                           );
                         },
                         child: Text(
                           "voltar para o login",
                           style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Color(0xffA7A7A7),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400),
+                            decoration: TextDecoration.underline,
+                            color: Color(0xffA7A7A7),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
                     )
@@ -328,26 +261,12 @@ class _SingUpPageState extends State<SingUpPage> {
     await showDialog(
       context: context,
       builder: (context) => StreamBuilder<String>(
-          stream: singUpBloc.outPhoto,
-          builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data == 'loading') {
-              return AlertDialog(
-                title: Text(
-                  'Aguarde...',
-                  style: TextStyle(color: Colors.blueGrey),
-                ),
-                content: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueGrey),
-                  ),
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
+        stream: singUpBloc.outPhoto,
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data == 'loading') {
             return AlertDialog(
               title: Text(
-                'Procure uma imagem',
+                'Aguarde...',
                 style: TextStyle(color: Colors.blueGrey),
               ),
               content: Container(
@@ -355,37 +274,52 @@ class _SingUpPageState extends State<SingUpPage> {
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.blueGrey),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.add_a_photo,
-                        color: Colors.blue,
-                      ),
-                      iconSize: 60,
-                      onPressed: () async {
-                        await singUpBloc.setImageRegister(ImageSource.camera);
-                        Navigator.pop(context);
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.add_photo_alternate,
-                        color: Colors.blue,
-                      ),
-                      iconSize: 60,
-                      onPressed: () async {
-                        await singUpBloc.setImageRegister(ImageSource.gallery);
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
+                child: CircularProgressIndicator(),
               ),
             );
-          }),
+          }
+          return AlertDialog(
+            title: Text(
+              'Procure uma imagem',
+              style: TextStyle(color: Colors.blueGrey),
+            ),
+            content: Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.blueGrey),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.add_a_photo,
+                      color: Colors.blue,
+                    ),
+                    iconSize: 60,
+                    onPressed: () async {
+                      await singUpBloc.setImageRegister(ImageSource.camera);
+                      Navigator.pop(context);
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.add_photo_alternate,
+                      color: Colors.blue,
+                    ),
+                    iconSize: 60,
+                    onPressed: () async {
+                      await singUpBloc.setImageRegister(ImageSource.gallery);
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
