@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:dio/dio.dart';
 import 'package:perguntando/src/shared/utils/constants.dart';
-import 'package:perguntando/src/shared/utils/convert_Md5.dart';
+import 'package:perguntando/src/shared/utils/convert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepository extends Disposable {

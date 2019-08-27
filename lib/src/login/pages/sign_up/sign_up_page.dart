@@ -307,7 +307,9 @@ class _SignUpPageState extends State<SignUpPage> {
       builder: (context) => StreamBuilder<String>(
         stream: singUpBloc.outPhoto,
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data == 'loading') {
+          if (snapshot.hasData &&
+              snapshot.data != null &&
+              snapshot.data == 'loading') {
             return AlertDialog(
               title: Text(
                 'Aguarde...',
@@ -345,8 +347,11 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     iconSize: 60,
                     onPressed: () async {
-                      await singUpBloc.setImageRegister(ImageSource.camera);
-                      Navigator.pop(context);
+                      final _isFile =
+                          await singUpBloc.setImageRegister(ImageSource.camera);
+                      if (_isFile) {
+                        Navigator.pop(context);
+                      }
                     },
                   ),
                   IconButton(
@@ -356,8 +361,11 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     iconSize: 60,
                     onPressed: () async {
-                      await singUpBloc.setImageRegister(ImageSource.gallery);
-                      Navigator.pop(context);
+                      final _isFile = await singUpBloc
+                          .setImageRegister(ImageSource.gallery);
+                      if (_isFile) {
+                        Navigator.pop(context);
+                      }
                     },
                   ),
                 ],

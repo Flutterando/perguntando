@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:perguntando/src/login/login_module.dart';
 import 'package:perguntando/src/shared/models/user_model.dart';
 import 'package:perguntando/src/shared/utils/constants.dart';
-import 'package:perguntando/src/shared/utils/convert_Md5.dart';
+import 'package:perguntando/src/shared/utils/convert.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -66,19 +66,23 @@ class SignUpBloc extends BlocBase {
     return int.parse(stringCode);
   }
 
-  Future<void> setImageRegister(ImageSource imageSource) async {
+  Future<bool> setImageRegister(ImageSource imageSource) async {
     _photoController.add('loading');
     final _imageFile = await getImageFile(imageSource);
     if (_imageFile != null) {
       final _imageUrl = await uploadImageFile(_imageFile);
       final imageUrl = '$API_URL/auth/v1/$_imageUrl';
       _photoController.add(imageUrl);
+      return true;
+    } else {
+      _photoController.add(null);
+      return false;
     }
   }
 
   Future<File> getImageFile(ImageSource imageSource) async {
     final _imageFile = await ImagePicker.pickImage(source: imageSource);
-    if (_imageFile.isAbsolute) {
+    if (_imageFile != null &&_imageFile.isAbsolute) {
       final _result = await FlutterImageCompress.compressAndGetFile(
         _imageFile.absolute.path,
         _imageFile.absolute.path,
