@@ -59,8 +59,10 @@ class SignUpBloc extends BlocBase {
   }
 
   int get generatorPinCode {
-    final stringCode =
-        DateTime.now().microsecondsSinceEpoch.toString().substring(0, 4);
+    final microsecond = DateTime.now().microsecond;
+    final millisecond = DateTime.now().millisecond;
+    final code = microsecond * millisecond;
+    final stringCode = code.toString().substring(0, 4);
     return int.parse(stringCode);
   }
 

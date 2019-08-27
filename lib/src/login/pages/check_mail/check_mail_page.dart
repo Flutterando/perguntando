@@ -59,15 +59,33 @@ class _CheckMailPageState extends State<CheckMailPage> {
                                   loginBloc.scaffoldKeySingInPage.currentState
                                       .showSnackBar(
                                     SnackBar(
+                                      duration: Duration(seconds: 10),
                                       content: Text(
                                           'Registro realizado com sucesso!'),
+                                      action: SnackBarAction(
+                                        label: 'ok',
+                                        onPressed: () {
+                                          loginBloc.scaffoldKeySingInPage
+                                              .currentState
+                                              .removeCurrentSnackBar();
+                                        },
+                                      ),
                                     ),
                                   );
                                 } else {
                                   loginBloc.scaffoldKeySingInPage.currentState
                                       .showSnackBar(
                                     SnackBar(
+                                      duration: Duration(seconds: 10),
                                       content: Text('Erro ao registrar!'),
+                                      action: SnackBarAction(
+                                        label: 'ok',
+                                        onPressed: () {
+                                          loginBloc.scaffoldKeySingInPage
+                                              .currentState
+                                              .removeCurrentSnackBar();
+                                        },
+                                      ),
                                     ),
                                   );
                                 }
@@ -113,8 +131,16 @@ class _CheckMailPageState extends State<CheckMailPage> {
                   // reinviar o codigo
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
+                      duration: Duration(seconds: 10),
                       content:
                           Text('Codigo Reinviado para ${singUpBloc.email}'),
+                      action: SnackBarAction(
+                        label: 'ok',
+                        onPressed: () {
+                          loginBloc.scaffoldKeySingInPage.currentState
+                              .removeCurrentSnackBar();
+                        },
+                      ),
                     ),
                   );
                   await singUpBloc.onSingUp();
