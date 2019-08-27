@@ -28,8 +28,17 @@ class _HomePageState extends State<HomePage> {
               future: _bloc.events,
               builder: (context, snapshot) {
                 if (!snapshot.hasData || snapshot == null) {
-                  return Center(
-                    child: CircularProgressIndicator(),
+                  return ListView.separated(
+                    padding: EdgeInsets.fromLTRB(
+                      40,
+                      60 + MediaQuery.of(context).viewPadding.top,
+                      40,
+                      80 + MediaQuery.of(context).viewPadding.bottom,
+                    ),
+                    itemCount: 6,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (_, index) => CardShimmer(),
+                    separatorBuilder: (_, index) => SizedBox(height: 25),
                   );
                 }
 
@@ -56,9 +65,7 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (BuildContext context) {
-                          return EventModule(
-                            snapshot.data[index]
-                          );
+                          return EventModule(snapshot.data[index]);
                         }));
                       },
                     );
