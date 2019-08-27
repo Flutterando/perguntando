@@ -28,16 +28,7 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    authBloc.outUser.listen((v) {
-      if (v != null)
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => HomeModule(),
-          ),
-        );
-    });
     authBloc.inUserState.add(NotAuthenticated());
   }
 
