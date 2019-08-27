@@ -274,7 +274,6 @@ class _SignInPageState extends State<SignInPage> {
         color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.circular(40),
       ),
-      height: 30,
       width: isLoading ? 48 : 150,
       alignment: Alignment.center,
       child: Material(

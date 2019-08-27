@@ -34,7 +34,6 @@ class _SignUpPageState extends State<SignUpPage> {
         color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.circular(40),
       ),
-      height: 30,
       width: 150,
       alignment: Alignment.center,
       child: Material(
