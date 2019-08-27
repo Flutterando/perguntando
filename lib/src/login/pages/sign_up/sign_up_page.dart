@@ -103,18 +103,19 @@ class _SignUpPageState extends State<SignUpPage> {
                   Expanded(
                     child: Container(
                       height: 2,
-                      margin: EdgeInsets.only(right: 10),
                       color: Colors.white,
                     ),
                   ),
-                  Text(
-                    "CADASTRO",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      "CADASTRO",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
                   ),
                   Expanded(
                     child: Container(
                       height: 2,
-                      margin: EdgeInsets.only(right: 10),
                       color: Colors.white,
                     ),
                   ),
