@@ -4,6 +4,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:perguntando/src/profile/repository/profile_repository.dart';
 import 'package:perguntando/src/shared/repositories/auth_repository.dart';
 import 'package:perguntando/src/shared/utils/stream_validators.dart';
+import 'package:perguntando/src/shared/utils/convert.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ProfileBloc extends BlocBase with Validator {
@@ -32,7 +33,7 @@ class ProfileBloc extends BlocBase with Validator {
           validPassword, validRePassword,
           (password, rePassword) => PasswordInfo(password,rePassword))
           .transform(retypePasswordValidator)
-          .map((e) => e.isNotEmpty ? _authRepository.generateMd5(e) as String : e)
+          .map((e) => e.isNotEmpty ? convertMd5(e) : e)
           .asBroadcastStream();
 
  submit = Observable
