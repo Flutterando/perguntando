@@ -57,17 +57,13 @@ class _SignInPageState extends State<SignInPage> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               SizedBox(
                 height: 100,
                 width: 100,
                 child: Image.asset("assets/logo.png"),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               Container(
                 width: 0,
                 constraints: BoxConstraints(
@@ -93,9 +89,7 @@ class _SignInPageState extends State<SignInPage> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 40,
-              ),
+              SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -117,9 +111,7 @@ class _SignInPageState extends State<SignInPage> {
                   )
                 ],
               ),
-              SizedBox(
-                height: 30,
-              ),
+              SizedBox(height: 30),
               Form(
                 key: bloc.formKey,
                 child: Column(
@@ -157,9 +149,7 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
+                    SizedBox(height: 20),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       child: TextFormField(
@@ -202,9 +192,10 @@ class _SignInPageState extends State<SignInPage> {
                           "esqueci minha senha",
                           textAlign: TextAlign.end,
                           style: TextStyle(
-                              color: Color(0xffA7A7A7),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
+                            color: Color(0xffA7A7A7),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
                     ),
@@ -222,32 +213,31 @@ class _SignInPageState extends State<SignInPage> {
                               ),
                             );
                           }
-                          return SizedBox(
-                            height: 50,
-                          );
+                          return SizedBox(height: 50);
                         }),
                     Container(
                       height: 46,
                       child: StreamBuilder<AuthState>(
-                          stream: authBloc.outUserState,
-                          initialData: NotAuthenticated(),
-                          builder: (context, snapshot) {
-                            if (snapshot.data is Loading) {
-                              return _buttonEnter(true);
-                            }
-                            return _buttonEnter(false);
-                          }),
+                        stream: authBloc.outUserState,
+                        initialData: NotAuthenticated(),
+                        builder: (context, snapshot) {
+                          if (snapshot.data is Loading) {
+                            return _buttonEnter(true);
+                          }
+                          return _buttonEnter(false);
+                        },
+                      ),
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
+                    SizedBox(height: 15),
                     Container(
                       padding: EdgeInsets.all(20),
                       child: GestureDetector(
                         onTap: () {
-                          loginBloc.pageController.animateToPage(1,
-                              duration: Duration(milliseconds: 1000),
-                              curve: Curves.bounceOut);
+                          loginBloc.pageController.animateToPage(
+                            1,
+                            duration: Duration(milliseconds: 1000),
+                            curve: Curves.ease,
+                          );
                         },
                         child: Text(
                           "cadastre-se agora",
@@ -262,9 +252,7 @@ class _SignInPageState extends State<SignInPage> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 25,
-              ),
+              SizedBox(height: 25),
             ],
           ),
         ),

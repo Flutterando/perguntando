@@ -26,7 +26,7 @@ class SingUpBloc extends BlocBase {
   final _photoController = BehaviorSubject<String>();
   Observable<String> get outPhoto => _photoController.stream;
 
-  onSingUp() {
+  void onSingUp() {
     if (singUpformKey.currentState.validate()) {
       singUpformKey.currentState.save();
       userRegister.email = email;
@@ -35,7 +35,7 @@ class SingUpBloc extends BlocBase {
       userRegister.password = password;
       //TODO mover para a pagina do CheckLogin;
       loginBloc.pageController.animateToPage(2,
-          duration: Duration(milliseconds: 1000), curve: Curves.bounceOut);
+          duration: Duration(milliseconds: 1000), curve: Curves.ease);
     }
   }
 

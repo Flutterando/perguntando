@@ -78,7 +78,7 @@ class _CheckMailPageState extends State<CheckMailPage> {
                 onTap: () {
                   loginBloc.pageController.animateToPage(1,
                       duration: Duration(milliseconds: 1000),
-                      curve: Curves.bounceOut);
+                      curve: Curves.ease);
                 },
                 child: Text(
                   'Voltar para cadastro',
