@@ -17,10 +17,10 @@ class _SingUpPageState extends State<SingUpPage> {
   var singUpBloc = LoginModule.to.bloc<SingUpBloc>();
   Size get size => MediaQuery.of(context).size;
 
-  OutlineInputBorder outlineborder() {
+  OutlineInputBorder outlineborder({Color erroColor = Colors.blue}) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(30),
-      borderSide: BorderSide(color: Colors.blue, width: 2),
+      borderSide: BorderSide(color: erroColor, width: 2),
     );
   }
 
@@ -45,7 +45,8 @@ class _SingUpPageState extends State<SingUpPage> {
                     return Center(
                       child: CircularImageWidget(
                         icon: Icons.add_a_photo,
-                        imageUrl: (snapshot.hasData && snapshot.data != 'loading')
+                        imageUrl:
+                            (snapshot.hasData && snapshot.data != 'loading')
                                 ? snapshot.data
                                 : null,
                         onPress: showUploadImageDialog,
@@ -84,7 +85,6 @@ class _SingUpPageState extends State<SingUpPage> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      height: 50,
                       width: size.width,
                       child: TextFormField(
                         onSaved: (v) {
@@ -103,20 +103,19 @@ class _SingUpPageState extends State<SingUpPage> {
                         minLines: 1,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                          alignLabelWithHint: true,
                           focusedBorder: outlineborder(),
                           border: outlineborder(),
                           enabledBorder: outlineborder(),
                           disabledBorder: outlineborder(),
+                          errorBorder: outlineborder(erroColor: Colors.red),
                           hasFloatingPlaceholder: false,
-                          labelText: "seu nome",
-                          labelStyle: TextStyle(color: Color(0xffA7A7A7)),
+                          hintText: "seu nome",
+                          hintStyle: TextStyle(color: Color(0xffA7A7A7)),
                         ),
                       ),
                     ),
                     SizedBox(height: 20),
                     Container(
-                      height: 50,
                       width: size.width,
                       child: TextFormField(
                         onSaved: (v) {
@@ -137,16 +136,16 @@ class _SingUpPageState extends State<SingUpPage> {
                           border: outlineborder(),
                           enabledBorder: outlineborder(),
                           disabledBorder: outlineborder(),
+                          errorBorder: outlineborder(erroColor: Colors.red),
                           hasFloatingPlaceholder: false,
-                          labelText: "seu email",
-                          labelStyle: TextStyle(color: Color(0xffA7A7A7)),
+                          hintText: "seu email",
+                          hintStyle: TextStyle(color: Color(0xffA7A7A7)),
                         ),
                       ),
                     ),
                     SizedBox(height: 20),
                     Container(
                       width: size.width,
-                      height: 50,
                       child: TextFormField(
                         onSaved: (v) {
                           singUpBloc.password = v;
@@ -170,16 +169,16 @@ class _SingUpPageState extends State<SingUpPage> {
                           border: outlineborder(),
                           enabledBorder: outlineborder(),
                           disabledBorder: outlineborder(),
+                          errorBorder: outlineborder(erroColor: Colors.red),
                           hasFloatingPlaceholder: false,
-                          labelText: "digita sua senha",
-                          labelStyle: TextStyle(color: Color(0xffA7A7A7)),
+                          hintText: "digita sua senha",
+                          hintStyle: TextStyle(color: Color(0xffA7A7A7)),
                         ),
                       ),
                     ),
                     SizedBox(height: 20),
                     Container(
                       width: size.width,
-                      height: 50,
                       child: TextFormField(
                         validator: (v) {
                           if (v != singUpBloc.password) {
@@ -196,18 +195,17 @@ class _SingUpPageState extends State<SingUpPage> {
                           border: outlineborder(),
                           enabledBorder: outlineborder(),
                           disabledBorder: outlineborder(),
+                          errorBorder: outlineborder(erroColor: Colors.red),
                           hasFloatingPlaceholder: false,
-                          labelText: "senha novamente",
-                          labelStyle: TextStyle(
+                          hintText: "senha novamente",
+                          hintStyle: TextStyle(
                             color: Color(0xffA7A7A7),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
-                    SizedBox(height: 30),
+                    SizedBox(height: 50),
                     Container(
-                      height: 46,
                       child: RaisedButton(
                         shape: StadiumBorder(),
                         color: Colors.blue,
