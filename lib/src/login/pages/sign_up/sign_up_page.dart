@@ -1,21 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:perguntando/src/login/pages/sign_up/sign_up_bloc.dart';
 import 'package:perguntando/src/shared/widgets/circular_image/circular_image_widget.dart';
 import '../../login_bloc.dart';
 import '../../login_module.dart';
-import 'sing_up_bloc.dart';
 import 'package:validators/validators.dart' as validators;
 
-class SingUpPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
   @override
-  _SingUpPageState createState() => _SingUpPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SingUpPageState extends State<SingUpPage> {
+class _SignUpPageState extends State<SignUpPage> {
   var loginBloc = LoginModule.to.bloc<LoginBloc>();
-  var singUpBloc = LoginModule.to.bloc<SingUpBloc>();
+  var singUpBloc = LoginModule.to.bloc<SignUpBloc>();
   Size get size => MediaQuery.of(context).size;
+  final _keyButton = GlobalKey();
 
   OutlineInputBorder outlineborder({Color erroColor = Colors.blue}) {
     return OutlineInputBorder(
@@ -24,11 +25,50 @@ class _SingUpPageState extends State<SingUpPage> {
     );
   }
 
+  Widget _buttonRegister(bool isLoading) {
+    return AnimatedContainer(
+      key: _keyButton,
+      duration: Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
+      decoration: BoxDecoration(
+          color: Colors.blue, borderRadius: BorderRadius.circular(40)),
+      height: 30,
+      width: isLoading ? 48 : 150,
+      alignment: Alignment.center,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: singUpBloc.onSingUp,
+          child: !isLoading
+              ? Container(
+                  width: 150,
+                  height: 50,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(40)),
+                  child: Center(
+                    child: Text(
+                      "CADASTRAR",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: EdgeInsets.all(10),
+                  child:
+                      CircularProgressIndicator(backgroundColor: Colors.white)),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
+    return Material(
+      color: Colors.transparent,
+      child: Container(
 //        color: Colors.greenAccent,
         alignment: Alignment.center,
         padding: EdgeInsets.all(25),
@@ -205,21 +245,28 @@ class _SingUpPageState extends State<SingUpPage> {
                       ),
                     ),
                     SizedBox(height: 50),
+                    StreamBuilder(
+                      stream: singUpBloc.outError,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          Text(
+                            snapshot.error.toString(),
+                            style: TextStyle(color: Colors.red),
+                          );
+                        }
+                        return SizedBox();
+                      },
+                    ),
                     Container(
-                      child: RaisedButton(
-                        shape: StadiumBorder(),
-                        color: Colors.blue,
-                        onPressed: singUpBloc.onSingUp,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40),
-                          child: Text(
-                            "CADASTRAR",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                      child: StreamBuilder<bool>(
+                        stream: singUpBloc.outLoading,
+                        initialData: false,
+                        builder: (context, snapshot) {
+                          if (snapshot.data) {
+                            return _buttonRegister(snapshot.data);
+                          }
+                          return _buttonRegister(snapshot.data);
+                        },
                       ),
                     ),
                     SizedBox(height: 10),

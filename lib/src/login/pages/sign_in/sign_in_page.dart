@@ -4,6 +4,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:perguntando/src/app_module.dart';
 import 'package:perguntando/src/home/home_module.dart';
+import 'package:perguntando/src/login/pages/sign_up/sign_up_bloc.dart';
 import 'package:perguntando/src/shared/blocs/auth_bloc.dart';
 import 'package:perguntando/src/shared/models/user_state.dart';
 
@@ -19,7 +20,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  var bloc = LoginModule.to.getBloc<SignInBloc>();
+  var signInBloc = LoginModule.to.getBloc<SignInBloc>();
+  var signUpBloc = LoginModule.to.getBloc<SignUpBloc>();
   final loginBloc = LoginModule.to.bloc<LoginBloc>();
   final authBloc = AppModule.to.bloc<AuthBloc>();
   final _keyButton = GlobalKey();
@@ -48,9 +50,9 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
+    return Material(
+      color: Colors.transparent,
+      child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.only(top: 25, left: 25, right: 25),
         height: MediaQuery.of(context).size.height,
@@ -113,7 +115,7 @@ class _SignInPageState extends State<SignInPage> {
               ),
               SizedBox(height: 30),
               Form(
-                key: bloc.formKey,
+                key: signInBloc.formKey,
                 child: Column(
                   children: <Widget>[
                     Container(
@@ -128,7 +130,7 @@ class _SignInPageState extends State<SignInPage> {
                           return null;
                         },
                         onSaved: (v) {
-                          bloc.email = v;
+                          signInBloc.email = v;
                         },
                         maxLines: 1,
                         style: TextStyle(
@@ -162,7 +164,7 @@ class _SignInPageState extends State<SignInPage> {
                           return null;
                         },
                         onSaved: (v) {
-                          bloc.password = v;
+                          signInBloc.password = v;
                         },
                         maxLines: 1,
                         style: TextStyle(
@@ -274,7 +276,7 @@ class _SignInPageState extends State<SignInPage> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          onTap: bloc.onLogin,
+          onTap: signInBloc.onLogin,
           child: !isLoading
               ? Container(
                   width: 150,

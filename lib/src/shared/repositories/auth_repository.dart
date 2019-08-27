@@ -14,7 +14,7 @@ class AuthRepository extends Disposable {
     String authToken = base64.encode('$email:$password');
     String credentials = 'Basic $authToken';
     var response = await refreshToken(credentials);
-    if (isTest) {
+    if (!isTest) {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       sharedPreferences.setString('credentials', credentials);

@@ -3,7 +3,7 @@ import 'package:perguntando/src/login/login_module.dart';
 import 'login_bloc.dart';
 import 'pages/check_mail/check_mail_page.dart';
 import 'pages/sign_in/sign_in_page.dart';
-import 'pages/sing_up/sing_up_page.dart';
+import 'pages/sign_up/sign_up_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -16,6 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: bloc.scaffoldKeySingInPage,
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
@@ -37,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
           PageView(
             physics: NeverScrollableScrollPhysics(),
             controller: bloc.pageController,
-            children: <Widget>[SignInPage(), SingUpPage(),CheckMailPage()],
+            children: <Widget>[SignInPage(), SignUpPage(),CheckMailPage()],
           ),         
         ],
       ),
