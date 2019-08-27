@@ -20,23 +20,6 @@ class _ProfilePageState extends State<ProfilePage> {
   AuthBloc _authBloc = AppModule.to.getBloc<AuthBloc>();
 
   ProfileBloc _profileBloc = ProfileModule.to.getBloc<ProfileBloc>();
-  StreamSubscription _subscription;
-
-  @override
-  void initState() {
-    _subscription = _profileBloc.submit.listen(
-      (e) => dialog(
-          title: "Successo",
-          content: "Suas informações foram atualizadas com sucesso."),
-    );
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _subscription.cancel();
-    super.dispose();
-  }
 
   void dialog({String title, String content}) {
     showDialog(
