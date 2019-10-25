@@ -53,8 +53,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             currentAccountPicture: CircleAvatar(
                               minRadius: 10,
                               maxRadius: 15,
-                              backgroundImage: NetworkImage(snapshot.hasData
-                                  ? snapshot?.data?.photo
+                              backgroundImage: NetworkImage(snapshot.hasData &&
+                              snapshot?.data?.photo != null
+                                  ?  snapshot?.data?.photo
                                   : "https://media.istockphoto.com/vectors/man-avatar-icon-man-flat-icon-man-faceless-avatar-man-character-vector-id1027708446"),
                             ),
                           );
