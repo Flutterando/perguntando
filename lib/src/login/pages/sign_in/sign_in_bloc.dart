@@ -16,6 +16,7 @@ class SignInBloc extends BlocBase {
   final AuthBloc _authBloc;
   final formKey = GlobalKey<FormState>();
 
+
   String email;
   String password;
 
