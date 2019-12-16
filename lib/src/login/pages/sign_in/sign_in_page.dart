@@ -8,8 +8,6 @@ import 'package:perguntando/src/app_module.dart';
 import 'package:perguntando/src/home/home_module.dart';
 import 'package:perguntando/src/shared/blocs/authentication_bloc.dart';
 import 'package:perguntando/src/shared/models/user_model.dart';
-import 'package:perguntando/src/shared/models/user_state.dart';
-
 import 'package:validators/validators.dart' as validators;
 
 import '../../login_bloc.dart';
