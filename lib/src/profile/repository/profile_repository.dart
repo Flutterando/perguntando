@@ -1,56 +1,23 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'package:hasura_connect/hasura_connect.dart';
-import 'package:perguntando/src/app_module.dart';
-import 'package:perguntando/src/shared/blocs/auth_bloc.dart';
+import 'package:perguntando/src/profile/models/profile_dto.dart';
 import 'package:perguntando/src/shared/repositories/custom_hasura_connect.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileRepository {
+
+abstract class IProfileRepository {
+  Future<void> update(UpdateUserDto profileDto);
+}
+
+class ProfileRepository implements IProfileRepository {
   final CustomHasuraConnect _customHasuraConnect;
   ProfileRepository(this._customHasuraConnect);
 
-  Future<void> updateUser(ProfileDto profileDto) async {
+  Future<void> update(UpdateUserDto profileDto) async {
     try {
-     
-      final passwordField =
-          profileDto.password.isNotEmpty ? " password: \$password," : '';
-
-      final passwordValue =
-          profileDto.password.isNotEmpty ? "\$password:String!," : '';
-
-      final nameField = profileDto.name.isNotEmpty ? " name: \$name, " : '';
-      final nameValue = profileDto.name.isNotEmpty ? " \$name:String!, " : '';
-
-      final prefs = await SharedPreferences.getInstance();
-      final authBloc = AppModule.to.getBloc<AuthBloc>();
-      final user = authBloc.userControleValue;
-
-      String doc = '''
-     mutation ($nameValue $passwordValue){
-      update_users(_set: {$nameField $passwordField}, where: {id: {_eq: ${user.idUser}}}) {
-      returning {
-        name
-          }
-        }
-      }
-      ''';
-      print("${doc}");
-
-      print(profileDto.toJson());
-
+      final doc = profileDto.password.isEmpty
+          ? updateUserQuery
+          : updateUserAndPasswordQuery;
       await _customHasuraConnect.mutation(doc, variables: profileDto.toJson());
-
-      final base64 = Latin1Codec().fuse(Base64Codec());
-      final authToken = base64.encode('${user.email}:${profileDto.password}');
-
-      final credentials = 'Basic $authToken';
-      prefs.setString('credentials', credentials);
-
-      user.name = profileDto.name;
-      
-      authBloc.inUser.add(user);
-
     } on HasuraError catch (e) {
       log("$e");
       rethrow;
@@ -61,19 +28,22 @@ class ProfileRepository {
   }
 }
 
-class ProfileDto {
-  final String name;
-  final String password;
+String updateUserQuery = '''
+     mutation (\$name:String!){
+      update_users(_set: {\$name}, where: {id: {_eq: \$userId}}) {
+      returning {
+        name
+          }
+        }
+      }
+      ''';
 
-  ProfileDto(this.name, this.password);
-
-  Map<String, dynamic> toJson(){
-   final json = <String,dynamic>{};
-   if(name != null && name.isNotEmpty)
-   json["name"] = name;
-    if(password != null && password.isNotEmpty)
-   json["password"] = password;
-   return json;
-  }
-  
-}
+String updateUserAndPasswordQuery = '''
+     mutation (\$name:String!,\$password:String!){
+      update_users(_set: {\$name,\$password}, where: {id: {_eq: \$userId}}) {
+      returning {
+        name
+          }
+        }
+      }
+      ''';

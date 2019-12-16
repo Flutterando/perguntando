@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
       drawer: DrawerWidget(),
       body: Stack(
         children: <Widget>[
-          BackgroundWidget(),
+         const BackgroundWidget(),
           FutureBuilder<List<EventModel>>(
               future: _bloc.events,
               builder: (context, snapshot) {
@@ -36,9 +36,9 @@ class _HomePageState extends State<HomePage> {
                       80 + MediaQuery.of(context).viewPadding.bottom,
                     ),
                     itemCount: 6,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (_, index) => CardShimmer(),
-                    separatorBuilder: (_, index) => SizedBox(height: 25),
+                    physics:const NeverScrollableScrollPhysics(),
+                    itemBuilder: (_, index) => const CardShimmer(),
+                    separatorBuilder: (_, index) => const SizedBox(height: 25),
                   );
                 }
 
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                     80 + MediaQuery.of(context).viewPadding.bottom,
                   ),
                   itemCount: snapshot.data.length,
-                  physics: BouncingScrollPhysics(),
+                  physics:const BouncingScrollPhysics(),
                   itemBuilder: (_, index) {
                     var date = snapshot?.data[index]?.infoDate;
 
@@ -71,15 +71,15 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                   separatorBuilder: (_, index) {
-                    return SizedBox(height: 25);
+                    return const SizedBox(height: 25);
                   },
                 );
               }),
-          Positioned(
+        const  Positioned(
             bottom: 0,
-            child: BottomWidget(),
+            child:  BottomWidget(),
           ),
-          AppbarWidget(),
+        const  AppbarWidget(),
         ],
       ),
     );

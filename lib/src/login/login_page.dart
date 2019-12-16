@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:perguntando/src/login/login_module.dart';
-import 'package:radial_button/widget/circle_floating_button.dart';
-
 import 'login_bloc.dart';
 import 'pages/page_register/register_page.dart';
 import 'pages/sign_in/sign_in_page.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({Key key}) : super(key: key);
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  var bloc = LoginModule.to.getBloc<LoginBloc>();
+  var bloc = LoginModule.to.getBloc<SplashBloc>();
 
   var itemsActionBar = [
     FloatingActionButton(
@@ -59,8 +58,8 @@ class _LoginPageState extends State<LoginPage> {
           PageView(
             physics: NeverScrollableScrollPhysics(),
             controller: bloc.pageController,
-            children: <Widget>[SignInPage(), RegisterPage()],
-          ),         
+            children: <Widget>[SignInPage(), SignUpPage()],
+          ),
         ],
       ),
     );

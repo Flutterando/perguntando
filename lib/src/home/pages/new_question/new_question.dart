@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hasura_connect/hasura_connect.dart';
 import 'package:perguntando/src/home/pages/question/question_module.dart';
-
 import 'new_question_bloc.dart';
 
 class NewQuestionPage extends StatefulWidget {
+  const NewQuestionPage({Key key}) : super(key: key);
   @override
   _NewQuestionPageState createState() => _NewQuestionPageState();
 }
@@ -12,8 +11,20 @@ class NewQuestionPage extends StatefulWidget {
 class _NewQuestionPageState extends State<NewQuestionPage> {
   var bloc = QuestionModule.to.bloc<NewQuestionBloc>();
   var formKey = GlobalKey<FormState>();
-  var focusNode = FocusNode();
+  FocusNode _focusNode;
   final maxLenght = 140;
+
+  @override
+  void initState() {
+    _focusNode = FocusNode();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +44,14 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                   final count = bloc.perguntaTextController.text.length;
                   return Text(
                     "$count/$maxLenght",
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   );
                 },
               ),
             ),
           )
         ],
-        title: Text(
+        title: const Text(
           "Nova pergunta",
           style: TextStyle(color: Colors.grey, fontSize: 16.5),
         ),
@@ -54,7 +65,7 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                 margin: const EdgeInsets.only(top: 15, left: 10),
                 child: TextFormField(
                   maxLength: maxLenght,
-                  focusNode: focusNode,
+                  focusNode: _focusNode,
                   controller: bloc.perguntaTextController,
                   autofocus: true,
                   expands: true,
@@ -73,16 +84,16 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                           context: context,
                           builder: (innerContext) {
                             return AlertDialog(
-                              title: Text("Alerta"),
-                              content: Text(
+                              title: const Text("Alerta"),
+                              content: const Text(
                                   "A mensagem deve possuir mais de 15 caracteres."),
                               actions: <Widget>[
                                 FlatButton(
                                   onPressed: () {
                                     Navigator.of(innerContext).pop();
-                                    focusNode.requestFocus();
+                                    _focusNode.requestFocus();
                                   },
-                                  child: Text("OK"),
+                                  child: const Text("OK"),
                                 ),
                               ],
                             );
@@ -95,16 +106,16 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                           context: context,
                           builder: (innerContext) {
                             return AlertDialog(
-                              title: Text("Alerta"),
-                              content: Text(
+                              title: const Text("Alerta"),
+                              content: const Text(
                                   "A mensagem não pode ter mais de 140 caracteres."),
                               actions: <Widget>[
                                 FlatButton(
                                   onPressed: () {
                                     Navigator.of(innerContext).pop();
-                                    focusNode.requestFocus();
+                                    _focusNode.requestFocus();
                                   },
-                                  child: Text("OK"),
+                                  child: const Text("OK"),
                                 ),
                               ],
                             );
@@ -132,7 +143,7 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
 
   Widget _buttonEnter(bool isLoading) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
       decoration: BoxDecoration(
           color: Colors.blue, borderRadius: BorderRadius.circular(40)),
@@ -142,7 +153,7 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
       child: Hero(
         tag: "a",
         child: Material(
-                  child: InkWell(
+          child: InkWell(
             onTap: isLoading
                 ? null
                 : () async {
@@ -154,8 +165,9 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                           context: context,
                           builder: (innerContext) {
                             return AlertDialog(
-                              title: Text("Sucesso"),
-                              content: Text("Pergunta enviada com sucesso!"),
+                              title: const Text("Sucesso"),
+                              content:
+                                  const Text("Pergunta enviada com sucesso!"),
                               actions: <Widget>[
                                 FlatButton(
                                   onPressed: () {
@@ -163,7 +175,7 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                                     Navigator.of(context).pop();
                                     bloc.perguntaTextController.clear();
                                   },
-                                  child: Text("OK"),
+                                  child: const Text("OK"),
                                 ),
                               ],
                             );
@@ -174,16 +186,16 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                           context: context,
                           builder: (innerContext) {
                             return AlertDialog(
-                              title: Text("Alerta"),
-                              content: Text(
+                              title: const Text("Alerta"),
+                              content: const Text(
                                   "Ocorreu um erro ao tentar enviar sua mensagem. Tente mais tarde."),
                               actions: <Widget>[
                                 FlatButton(
                                   onPressed: () {
                                     Navigator.of(innerContext).pop();
-                                    focusNode.requestFocus();
+                                    _focusNode.requestFocus();
                                   },
-                                  child: Text("OK"),
+                                  child: const Text("OK"),
                                 ),
                               ],
                             );
@@ -196,16 +208,15 @@ class _NewQuestionPageState extends State<NewQuestionPage> {
                   },
             child: Container(
               decoration: BoxDecoration(
-                //    borderRadius: isLoading ? BorderRadius.circular(100) : null,
                 color: Colors.blue[800],
               ),
               height: 60,
               alignment: Alignment.center,
               child: isLoading
-                  ? CircularProgressIndicator(
+                  ? const CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     )
-                  : Icon(Icons.add, size: 40, color: Colors.white),
+                  : const Icon(Icons.add, size: 40, color: Colors.white),
             ),
           ),
         ),

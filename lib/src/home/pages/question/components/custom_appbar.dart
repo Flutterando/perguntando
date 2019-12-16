@@ -8,7 +8,7 @@ import '../question_bloc.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double size;
 
-  CustomAppBar({@required this.size});
+ const CustomAppBar({@required this.size});
 
   @override
   Size get preferredSize => Size.fromHeight(size);
@@ -22,7 +22,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       children: <Widget>[
         Hero(
           tag: questionBloc.tag,
-          child: Card(elevation: 10),
+          child: const Card(elevation: 10),
         ),
         SafeArea(
           child: Container(

@@ -6,7 +6,7 @@ import 'package:perguntando/src/shared/utils/constants.dart';
 
 main() {
   test('Register Test', () async {
-    final user = UserModel(
+    final user = User(
       email: 'alvaro@flutterando.com.br',
       name: 'Alvaro Vasconcelos',
      

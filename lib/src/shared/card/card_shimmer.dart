@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CardShimmer extends StatelessWidget {
+  
+  const CardShimmer({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -22,7 +24,7 @@ class CardShimmer extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            Center(
+           const Center(
               child: Text(
                 "Loading...",
                 style: TextStyle(color: Colors.grey),

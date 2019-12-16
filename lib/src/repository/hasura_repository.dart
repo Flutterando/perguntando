@@ -4,7 +4,6 @@ import 'package:hasura_connect/hasura_connect.dart';
 import 'package:perguntando/src/shared/models/enums.dart';
 import 'package:perguntando/src/shared/models/event/event_model.dart';
 import 'package:perguntando/src/shared/models/event/lecture_model.dart';
-import 'package:perguntando/src/shared/models/lecture_question_liked_model.dart';
 import 'package:perguntando/src/shared/models/lecture_question_model.dart';
 import 'package:perguntando/src/shared/models/user_model.dart';
 
@@ -13,7 +12,7 @@ class HasuraRepository extends Disposable {
 
   HasuraRepository(this.conn);
   // ---
-  Future<UserModel> getUser(UserModel user) async {
+  Future<User> getUser(User user) async {
     String query = '''getUser(\$email:String!, \$pwd:String!){
                         user(where: {email: {_eq: \$email}, password: {_eq: \$pwd}}) {
                           id
@@ -32,7 +31,7 @@ class HasuraRepository extends Disposable {
       if (data['data']['user'].isEmpty) {
         throw 'Usuario ou senha invalidos';
       } else {
-        return UserModel.fromJson(data['data']['user'][0]);
+        return User.fromJson(data['data']['user'][0]);
       }
     } on HasuraError catch (e) {
       print('LOGX ==:>> ERROR[getUser]');
@@ -44,7 +43,7 @@ class HasuraRepository extends Disposable {
   }
 
   //--
-  Future<UserModel> createUser(UserModel user) async {
+  Future<User> createUser(User user) async {
     var query =
         '''mutation createUser(\$name:String!, \$email:String!, \$pwd:String!, \$photo:String!, \$githubUser:String!){
               insert_user(objects: {name: \$name, email: \$email, password: \$pwd, photo: \$photo, github_user: \$githubUser}) {
@@ -64,7 +63,7 @@ class HasuraRepository extends Disposable {
         'githubUser': user.githubUser
       });
 
-      user.idUser = data['data']['insert_user']['returning'][0]['id_user'];
+      user.id = data['data']['insert_user']['returning'][0]['id_user'];
       user.infoDate = data['data']['insert_user']['returning'][0]['info_date'];
       return user;
     } on HasuraError catch (e) {
@@ -142,7 +141,7 @@ class HasuraRepository extends Disposable {
   //--
   Snapshot<List<LectureQuestionModel>> getQuestionLectures({
     @required LectureModel lecture,
-    @required UserModel user,
+    @required User user,
     FilterQuestionOrdination type,
     int limit = 10,
   }) {
@@ -188,7 +187,7 @@ class HasuraRepository extends Disposable {
       Snapshot<List<LectureQuestionModel>> snapshot = conn.subscription(query,
           variables: {
             'id_lecture': lecture.idLecture,
-            'id_user': user.idUser,
+            'id_user': user.id,
             'limit': limit
           }).map((json) {
         var a =

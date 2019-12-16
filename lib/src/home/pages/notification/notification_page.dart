@@ -7,6 +7,8 @@ import 'package:perguntando/src/shared/models/notification_model.dart';
 import 'package:perguntando/src/shared/notification/notification_bloc.dart';
 
 class NotificationPage extends StatefulWidget {
+  const NotificationPage({Key key}) : super(key: key);
+
   @override
   _NotificationPageState createState() => _NotificationPageState();
 }
@@ -29,19 +31,23 @@ class _NotificationPageState extends State<NotificationPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon( Platform.isIOS ?   Icons.arrow_back_ios : Icons.arrow_back,color: Theme.of(context).primaryColor),
-          onPressed: (){
+          icon: Icon(Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
+              color: Theme.of(context).primaryColor),
+          onPressed: () {
             Navigator.pop(context);
           },
         ),
         backgroundColor: Colors.white,
-        title: Text("Notificações",style: TextStyle(color: Colors.grey,fontSize: 15),),
+        title: const Text(
+          "Notificações",
+          style: TextStyle(color: Colors.grey, fontSize: 15),
+        ),
       ),
       body: StreamBuilder<List<NotificationModel>>(
           stream: AppModule.to.getBloc<NotificationBloc>().notificationOut,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return Center(
+              return const Center(
                 child:
                     Text("OPS!, não foi possível recuperar suas notificações"),
               );
@@ -56,36 +62,40 @@ class _NotificationPageState extends State<NotificationPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Icon(Icons.delete,color: Colors.white,),
+                        const Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
                         Container(
                           width: 20.0,
                         )
                       ],
                     ),
                   ),
-                  onDismissed: (direction){
-                    if(direction == DismissDirection.endToStart){
-                      Timer(Duration(milliseconds: 500), (){
-                        AppModule.to.getBloc<NotificationBloc>().deleteNotify(index);
+                  onDismissed: (direction) {
+                    if (direction == DismissDirection.endToStart) {
+                      Timer(const Duration(milliseconds: 500), () {
+                        AppModule.to
+                            .getBloc<NotificationBloc>()
+                            .deleteNotify(index);
                       });
-                     
                     }
                   },
                   child: Card(
                     elevation: 5.0,
-                                      child: ListTile(
+                    child: ListTile(
                       title: Text("${list[index].title}"),
-                      leading: Icon(Icons.notifications,color: Theme.of(context).primaryColor),
+                      leading: Icon(Icons.notifications,
+                          color: Theme.of(context).primaryColor),
                       subtitle: list[index].subtitle == null
-                          ? Text("")
+                          ? const Text("")
                           : Text("${list[index].subtitle}"),
                     ),
                   ),
-                
                 ),
               );
             } else {
-              return Center(
+              return const Center(
                 child: Text("Nenhuma notificação"),
               );
             }

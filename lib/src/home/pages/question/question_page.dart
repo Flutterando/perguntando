@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hasura_connect/hasura_connect.dart';
 import 'package:perguntando/src/home/pages/question/components/question_card.dart';
 import 'package:perguntando/src/home/pages/question/components/custom_appbar.dart';
 import 'package:perguntando/src/home/pages/new_question/new_question.dart';
@@ -12,6 +10,7 @@ import 'package:perguntando/src/shared/models/lecture_question_model.dart';
 import 'package:radial_button/widget/circle_floating_button.dart';
 
 class QuestionPage extends StatefulWidget {
+  const QuestionPage({Key key}) : super(key: key);
   @override
   _QuestionPageState createState() => _QuestionPageState();
 }
@@ -19,18 +18,18 @@ class QuestionPage extends StatefulWidget {
 class _QuestionPageState extends State<QuestionPage> {
   final questionBloc = QuestionModule.to.bloc<QuestionBloc>();
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  GlobalKey<CircleFloatingButtonState> floatingButtonKey =
-      GlobalKey<CircleFloatingButtonState>();
-  var scrollController = ScrollController();
+  final floatingButtonKey = GlobalKey<CircleFloatingButtonState>();
+  ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
 
-    scrollController.addListener(() {
-      var max = scrollController.position.maxScrollExtent;
+    _scrollController.addListener(() {
+      var max = _scrollController.position.maxScrollExtent;
 
-      var offset = scrollController.offset;
+      var offset = _scrollController.offset;
       if (offset > max - 20) {
         questionBloc.getMoreQuestions();
       }
@@ -38,15 +37,21 @@ class _QuestionPageState extends State<QuestionPage> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      appBar: CustomAppBar(size: 80),
+      appBar: const CustomAppBar(size: 80),
       body: StreamBuilder<List<LectureQuestionModel>>(
         stream: questionBloc.filterOut,
         builder: (_, snapshot) {
           if (snapshot.hasError) {
-            return Center(
+            return const Center(
               child: Text(
                 "Ocorreu um erro",
                 style: TextStyle(color: Colors.redAccent),
@@ -54,7 +59,7 @@ class _QuestionPageState extends State<QuestionPage> {
             );
           }
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -70,7 +75,7 @@ class _QuestionPageState extends State<QuestionPage> {
             );
           }
           return ListView.builder(
-            controller: scrollController,
+            controller: _scrollController,
             itemCount: snapshot.data.length,
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).size.height * 0.3),
@@ -138,13 +143,13 @@ class _QuestionPageState extends State<QuestionPage> {
           FloatingActionButton(
               heroTag: UniqueKey().toString(),
               backgroundColor: Theme.of(context).primaryColor,
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     fullscreenDialog: true,
-                    builder: (BuildContext context) => NewQuestionPage(),
+                    builder: (BuildContext context) => const NewQuestionPage(),
                   ),
                 );
                 floatingButtonKey.currentState.close();
@@ -153,7 +158,7 @@ class _QuestionPageState extends State<QuestionPage> {
         color: Theme.of(context).primaryColor,
         icon: Icons.menu,
         key: floatingButtonKey,
-        duration: Duration(milliseconds: 100),
+        duration: const Duration(milliseconds: 100),
         useOpacity: true,
         curveAnim: Curves.ease,
       ),
@@ -170,11 +175,11 @@ class _QuestionPageState extends State<QuestionPage> {
           icon,
           size: 15,
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(
           text,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 6),
+          style: const TextStyle(fontSize: 6),
         )
       ],
     );

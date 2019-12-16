@@ -11,7 +11,8 @@ class NotificationBloc extends BlocBase {
   Observable<int> get countNotify =>
       currentNotify.map((item) => item.length ?? 0);
 
-  Observable<List<NotificationModel>> get notificationOut => currentNotify.stream.switchMap(observableNotify);    
+  Observable<List<NotificationModel>> get notificationOut =>
+      currentNotify.stream.switchMap(observableNotify);
 
   void addNotify(String data) {
     var list = currentNotify.value ?? <String>[];
@@ -19,13 +20,18 @@ class NotificationBloc extends BlocBase {
     currentNotify.sink.add(list);
   }
 
-  Stream<List<NotificationModel>> observableNotify(List<String> currentList) async* {
+  Stream<List<NotificationModel>> observableNotify(
+      List<String> currentList) async* {
     try {
       var storage = await SharedPreferences.getInstance();
       List<String> list;
       if (storage.containsKey("notification")) {
         list = storage.getStringList("notification");
-        yield list.map((item) => NotificationModel.fromJson(jsonDecode(item))).toList().reversed.toList();
+        yield list
+            .map((item) => NotificationModel.fromJson(jsonDecode(item)))
+            .toList()
+            .reversed
+            .toList();
       } else
         yield <NotificationModel>[];
     } catch (e) {
@@ -34,24 +40,23 @@ class NotificationBloc extends BlocBase {
     }
   }
 
-  void initNotify(){
+  void initNotify() {
     currentNotify.sink.add(null);
   }
 
-  void closeNotify(){
+  void closeNotify() {
     currentNotify.sink.add(null);
   }
 
-  void deleteNotify(int index)async{
-    if(index != null){
-    var storage = await SharedPreferences.getInstance();
-    var list = storage.getStringList("notification");
-    list.reversed.toList();
-    list.removeAt(index);
-    await storage.setStringList("notification", list);
-    }
-    else
-    initNotify();
+  void deleteNotify(int index) async {
+    if (index != null) {
+      var storage = await SharedPreferences.getInstance();
+      var list = storage.getStringList("notification");
+      list.reversed.toList();
+      list.removeAt(index);
+      await storage.setStringList("notification", list);
+    } else
+      initNotify();
   }
 
   @override

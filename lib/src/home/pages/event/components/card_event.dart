@@ -30,7 +30,7 @@ class CardEvent extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(20),
+            padding:const EdgeInsets.all(20),
             width: 230,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

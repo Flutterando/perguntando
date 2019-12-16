@@ -24,7 +24,7 @@ class NewQuestionBloc extends BlocBase {
   Future<bool> sendMessage() async {
     isLoading.add(true);
     try {
-     var result =  await repository.createLectureQuestion(LectureQuestionModel(idUser: questionBloc.user.idUser, idLecture: questionBloc.lecture.idLecture , description: perguntaTextController.text ));       
+     var result =  await repository.createLectureQuestion(LectureQuestionModel(idUser: questionBloc.user.id, idLecture: questionBloc.lecture.idLecture , description: perguntaTextController.text ));       
      return result != null;
     } catch (e) {
     }

@@ -1,5 +1,5 @@
-class UserModel {
-  int idUser;
+class User {
+  int id;
   String name;
   String email;
   String password;
@@ -7,16 +7,16 @@ class UserModel {
   String photo;
   String githubUser;
 
-  UserModel(
-      {this.idUser,
+  User(
+      {this.id,
       this.name,
       this.email,
       this.infoDate,
       this.photo,
       this.githubUser});
 
-  UserModel.fromJson(Map<String, dynamic> json) {
-    idUser = json['id'];
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     name = json['name'];
     email = json['mail'];
     infoDate = json['info_date'];
@@ -26,7 +26,7 @@ class UserModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.idUser;
+    data['id'] = this.id;
     data['name'] = this.name;
     data['mail'] = this.email;
     data['info_date'] = this.infoDate;

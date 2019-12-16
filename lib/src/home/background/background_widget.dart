@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class BackgroundWidget extends StatefulWidget {
+
+
+  const BackgroundWidget({Key key}) : super(key: key);
   @override
   _BackgroundWidgetState createState() => _BackgroundWidgetState();
 }

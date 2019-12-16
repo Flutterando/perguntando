@@ -6,7 +6,7 @@ class LectureQuestionModel {
   int idUser;
   String description;
   DateTime infoDate;
-  UserModel user;
+  User user;
   int qtdLike;
   bool isLiked;
 
@@ -26,7 +26,7 @@ class LectureQuestionModel {
     idUser = json['id_user'];
     description = json['description'];
     infoDate = DateTime.tryParse(json['info_date']);
-    user = UserModel.fromJson(json['user']);
+    user = User.fromJson(json['user']);
     qtdLike = json['lecture_question_likeds_aggregate']['aggregate']['count'];
     isLiked = (json['lecture_question_likeds'].length == 0)? false: true; 
   }

@@ -11,7 +11,7 @@ class QuestionBloc extends BlocBase {
   final String tag;
   final LectureModel lecture;
   final HasuraRepository _hasuraRepository;
-  final UserModel user;
+  final User user;
 
   int page;
 
@@ -26,7 +26,7 @@ class QuestionBloc extends BlocBase {
 
     _listagemInicial = {
       'id_lecture': lecture.idLecture,
-      'id_user': user.idUser,
+      'id_user': user.id,
       'limit': 1 * 10,
     };
 
@@ -47,12 +47,12 @@ class QuestionBloc extends BlocBase {
 
   Future<bool> like(LectureQuestionModel lectureQuestion) async {
     return await _hasuraRepository.createLectureQuestionLiked(
-        _byDateSnapshot, lectureQuestion, user.idUser);
+        _byDateSnapshot, lectureQuestion, user.id);
   }
 
   Future<bool> dislike(LectureQuestionModel lectureQuestionLikedModel) async {
     return await _hasuraRepository.deleteLectureQuestionLiked(
-        _byDateSnapshot, lectureQuestionLikedModel, user.idUser);
+        _byDateSnapshot, lectureQuestionLikedModel, user.id);
   }
 
   final BehaviorSubject<FilterQuestionOrdination> filterStream =
@@ -96,7 +96,7 @@ class QuestionBloc extends BlocBase {
   void getMoreQuestions() {
     Map<String, dynamic> variable = {
       'id_lecture': lecture.idLecture,
-      'id_user': user.idUser,
+      'id_user': user.id,
       'limit': page * 10,
     };
 

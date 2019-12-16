@@ -1,63 +1,65 @@
-import 'dart:developer';
+import 'package:mobx/mobx.dart';
+import 'package:perguntando/src/profile/models/profile_dto.dart';
+import 'package:perguntando/src/shared/models/user_model.dart';
+import 'package:perguntando/src/shared/services/authentication_facade.dart';
+part 'profile_bloc.g.dart';
 
-import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:perguntando/src/profile/repository/profile_repository.dart';
-import 'package:perguntando/src/shared/repositories/auth_repository.dart';
-import 'package:perguntando/src/shared/utils/stream_validators.dart';
-import 'package:rxdart/rxdart.dart';
+class ProfileBloc extends _ProfileBloc with _$ProfileBloc {
+  ProfileBloc(IAuthenticationFacade authenticationFacade)
+      : super(authenticationFacade);
+}
 
-class ProfileBloc extends BlocBase with Validator {
-  final _name = PublishSubject<String>();
-  final _password = PublishSubject<String>();
-  final _rePassword = PublishSubject<String>();
-  final ProfileRepository _profileRepository;
-  final AuthRepository _authRepository;
+abstract class _ProfileBloc with Store {
+  final IAuthenticationFacade _authenticationFacade;
 
-// colocar pra funcionar atualizando infos independentes
+  String name;
 
-  ProfileBloc(this._profileRepository, this._authRepository) {
-  validName = _name
-          .transform(nameValidator)
-          .asBroadcastStream();
+  String password;
 
-  validPassword = _password
-          .transform(passwordValidator)
-          .asBroadcastStream();
-  validRePassword = _rePassword
-          .transform(passwordValidator)
-          .asBroadcastStream();
+  @observable
+  String repeatPassword;
 
-  comparePassword = Observable
-        .zip2<String, String, PasswordInfo>(
-          validPassword, validRePassword,
-          (password, rePassword) => PasswordInfo(password,rePassword))
-          .transform(retypePasswordValidator)
-          .map((e) => e.isNotEmpty ? _authRepository.generateMd5(e) as String : e)
-          .asBroadcastStream();
+  @observable
+  ObservableFuture response = ObservableFuture.value(null);
 
- submit = Observable
-        .zip2<String,String,ProfileDto>
-        (validName, comparePassword, (name,password) => ProfileDto(name, password))
-        .asyncMap((e) => _profileRepository.updateUser(e));
+  _ProfileBloc(this._authenticationFacade);
 
-  }
-  Observable<String> comparePassword;
-  Observable<String> validName;
-  Observable<String> validPassword;
-  Observable<String> validRePassword;
-  Observable submit;
-
-
-  void nameEvent(String name) => _name.add(name);
-  void passwordEvent(String password) => _password.add(password);
-  void rePasswordEvent(String rePassword) => _rePassword.add(rePassword);
-
-  @override
-  void dispose() {
-    _name.close();
-    _password.close();
-    _rePassword.close();
-    super.dispose();
+  @action
+  Future<void> submit(User user) async {
+    final profileDto =
+        UpdateUserDto(name.trim(), password.trim(), user.email, user.id);
+    response = ObservableFuture(_authenticationFacade.update(profileDto));
   }
 }
 
+String validateName(String value) {
+  String validated = value.trim();
+  if (validated.split('').length >= 1) {
+    return null;
+  } else {
+    return "Insira um nome válido";
+  }
+}
+
+String validatePassword(String value) {
+  String validated = value.trim();
+  if (validated.isEmpty) {
+    return null;
+  } else {
+    if (validated.length >= 6) {
+      return null;
+    } else {
+      return "Insira uma senha de no mínimo 6 caracteres";
+    }
+  }
+}
+
+String validateRepeatPassowrd(String value, String repeat) {
+  final password = value.trim();
+  final repeatPassword = repeat.trim();
+  if (password.compareTo(repeatPassword) == 0) {
+    return null;
+  } else {
+    return "As senhas devem ser iguais";
+  }
+}

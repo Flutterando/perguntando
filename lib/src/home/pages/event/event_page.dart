@@ -39,7 +39,7 @@ class _EventPageState extends State<EventPage> {
           },
         ),
         Container(
-          padding: EdgeInsets.only(top: 80),
+          padding:const EdgeInsets.only(top: 80),
           child: ScrollableContentWidget(
             crossAxisAlignment: CrossAxisAlignment.start,
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -62,7 +62,7 @@ class _EventPageState extends State<EventPage> {
               ),
               Text(
                 "${widget.eventModel?.title}",
-                style: TextStyle(
+                style:const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
@@ -72,19 +72,19 @@ class _EventPageState extends State<EventPage> {
               ),
               Text(
                 "${DateFormat('dd/MM/yyyy').format(widget.eventModel?.infoDate)}",
-                style: TextStyle(color: Colors.white, fontSize: 14),
+                style:const TextStyle(color: Colors.white, fontSize: 14),
               ),
               Container(
                 height: 15,
               ),
               Text(
                 "${widget.eventModel?.description}",
-                style: TextStyle(color: Colors.white, fontSize: 14),
+                style:const TextStyle(color: Colors.white, fontSize: 14),
               ),
             ],
             button: SafeArea(
               child: Container(
-                padding: EdgeInsets.only(bottom: 50),
+                padding:const EdgeInsets.only(bottom: 50),
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   width: double.infinity,

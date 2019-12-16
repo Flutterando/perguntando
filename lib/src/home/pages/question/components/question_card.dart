@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:perguntando/src/app_module.dart';
 import 'package:perguntando/src/home/pages/question/question_module.dart';
 import 'package:perguntando/src/shared/models/lecture_question_model.dart';
 import 'package:perguntando/src/shared/utils/date_utils.dart';
@@ -71,7 +70,7 @@ class _QuestionCardState extends State<QuestionCard> {
                         ),
                         Text(
                           "${frindlyFormatTime(widget.lectureQuestionModel.infoDate)}",
-                          style: TextStyle(fontSize: 11),
+                          style: const TextStyle(fontSize: 11),
                         )
                       ],
                     )
@@ -93,16 +92,16 @@ class _QuestionCardState extends State<QuestionCard> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  if (bloc.user.idUser ==
-                      widget.lectureQuestionModel.user.idUser)
+                  if (bloc.user.id ==
+                      widget.lectureQuestionModel.user.id)
                     FlatButton(
                       onPressed: () async {
                         showDialog(
                             context: context,
                             builder: (innerContext) {
                               return AlertDialog(
-                                title: Text("Alerta"),
-                                content: Text("Deseja excluir essa mensagem?"),
+                                title: const Text("Alerta"),
+                                content: const Text("Deseja excluir essa mensagem?"),
                                 actions: <Widget>[
                                   FlatButton(
                                     onPressed: () {
@@ -117,14 +116,14 @@ class _QuestionCardState extends State<QuestionCard> {
                                               widget.lectureQuestionModel);
                                       if (!excluida) {
                                         final snackBar = SnackBar(
-                                            content: Text(
+                                            content: const Text(
                                                 "Não foi possivel excluir"));
                                         widget.scaffoldKey.currentState
                                             .showSnackBar(snackBar);
                                       }
                                       Navigator.of(innerContext).pop();
                                     },
-                                    child: Text("SIM"),
+                                    child: const Text("SIM"),
                                   )
                                 ],
                               );

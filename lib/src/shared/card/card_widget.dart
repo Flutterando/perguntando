@@ -33,20 +33,20 @@ class CardWidget extends StatelessWidget {
               width: double.infinity,
               fit: BoxFit.cover,
               imageUrl: imageUrl,
-              placeholder: (context, val) => CardShimmer(),
+              placeholder: (context, val) => const CardShimmer(),
             ),
             Container(
               height: 170,
               alignment: Alignment.bottomCenter,
               child: Column(
                 children: <Widget>[
-                  Spacer(),
+                  const Spacer(),
                   Expanded(
                     child: ClipRect(
                       child: AnimatedCard(
                         direction: AnimatedCardDirection.bottom,
-                        initDelay: Duration(seconds: 1),
-                        initOffset: Offset(0, 85),
+                        initDelay: const Duration(seconds: 1),
+                        initOffset: const Offset(0, 85),
                         child: Container(
                           width: double.infinity,
                           color: Colors.black.withOpacity(.7),
@@ -55,26 +55,30 @@ class CardWidget extends StatelessWidget {
                             children: <Widget>[
                               Text(
                                 title,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 18,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(height: 3,),
+                              const SizedBox(
+                                height: 3,
+                              ),
                               Text(
                                 subtitle,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 14,
                                   color: Colors.white,
                                 ),
                               ),
-                              SizedBox(height: 3,),
+                              const SizedBox(
+                                height: 3,
+                              ),
                               Text(
                                 date ?? "",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 14,
                                   color: Colors.white,
                                 ),

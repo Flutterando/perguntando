@@ -1,50 +1,35 @@
-import 'dart:convert';
-
-import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:perguntando/src/repository/hasura_repository.dart';
-
-import 'package:perguntando/src/shared/blocs/auth_bloc.dart';
+import 'package:mobx/mobx.dart';
+import 'package:perguntando/src/login/models/login_dto.dart';
 import 'package:perguntando/src/shared/models/user_model.dart';
-import 'package:perguntando/src/shared/models/user_state.dart';
-import 'package:perguntando/src/shared/repositories/auth_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:perguntando/src/shared/services/authentication_facade.dart';
 
-class SignInBloc extends BlocBase {
-  final HasuraRepository _hasuraRepository;
-  final AuthBloc _authBloc;
-  final formKey = GlobalKey<FormState>();
+part 'sign_in_bloc.g.dart';
 
+class SignInBloc extends _SignInBloc with _$SignInBloc {
+  SignInBloc(IAuthenticationFacade authenticationFacade)
+      : super(authenticationFacade);
+}
+
+abstract class _SignInBloc with Store {
+  final IAuthenticationFacade _authenticationFacade;
+
+  @observable
   String email;
+
+  @observable
   String password;
 
-  SignInBloc(this._authBloc, this._hasuraRepository);
+  @observable
+  ObservableFuture<User> response = ObservableFuture.value(null);
 
-  Future<bool> onLogin() async {
-    SharedPreferences _sharedPreferences =
-        await SharedPreferences.getInstance();
-    FormState _formState = formKey.currentState;
-    if (_formState.validate()) {
-      _formState.save();
-      _authBloc.inUserState.add(Loading());
-      AuthRepository authRepository = AuthRepository();
-      try {
-        var response = await authRepository.getToken(email, password);
-        _sharedPreferences.setString('token', response['token']);
-        _sharedPreferences.setString('user', jsonEncode(response['user']));
-        final user = UserModel.fromJson(response['user']);
-        _authBloc.inUser.add(user);
-        return true;
-      } on DioError catch (e) {
-        _authBloc.inUserState.add(Error(e));
-      }
-    }
-    return false;
-  }
+  _SignInBloc(this._authenticationFacade);
 
-  @override
-  void dispose() {
-    super.dispose();
+  @action
+  void submit() {
+    response = ObservableFuture(
+      _authenticationFacade.login(
+        LoginDto(email, password),
+      ),
+    );
   }
 }

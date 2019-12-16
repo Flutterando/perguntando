@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:perguntando/src/app_module.dart';
 import 'package:perguntando/src/login/login_module.dart';
 import 'package:perguntando/src/profile/profile_module.dart';
-import 'package:perguntando/src/shared/blocs/auth_bloc.dart';
+import 'package:perguntando/src/shared/blocs/authentication_bloc.dart';
 import 'package:perguntando/src/shared/widgets/drawer/custom_list_tile.dart';
-import 'package:perguntando/src/splash/splash_page.dart';
-import 'package:meta/meta.dart';
-
-import '../../models/user_model.dart';
 
 class DrawerWidget extends StatefulWidget {
   @override
@@ -15,11 +11,12 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  final bloc = AppModule.to.bloc<AuthBloc>();
+  final bloc = AppModule.to.bloc<AuthenticationBloc>();
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
+    final user = bloc.currentUser;
     return SizedBox.fromSize(
       size: Size(220, height),
       child: Drawer(
@@ -32,43 +29,34 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 height: 370,
                 child: Column(
                   children: <Widget>[
-                    StreamBuilder<UserModel>(
-                        stream: bloc.outUser,
-                        builder: (context, snapshot) {
-                          return UserAccountsDrawerHeader(
-                            decoration: BoxDecoration(
-                              color: Colors.blue[800],
-                            ),
-                            accountName: Text(
-                              snapshot.data != null && snapshot.hasData
-                                  ? snapshot?.data?.name ?? ''
-                                  : "Carregando...",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            accountEmail: Text(
-                              snapshot.data != null && snapshot.hasData
-                                  ? snapshot?.data?.email ?? ''
-                                  : "Carregando...",
-                            ),
-                            currentAccountPicture: CircleAvatar(
-                              minRadius: 10,
-                              maxRadius: 15,
-                              backgroundImage: NetworkImage(snapshot.hasData &&
-                              snapshot?.data?.photo != null
-                                  ?  snapshot?.data?.photo
-                                  : "https://media.istockphoto.com/vectors/man-avatar-icon-man-flat-icon-man-faceless-avatar-man-character-vector-id1027708446"),
-                            ),
-                          );
-                        }),
+                    UserAccountsDrawerHeader(
+                      decoration: BoxDecoration(
+                        color: Colors.blue[800],
+                      ),
+                      accountName: Text(
+                        user.name,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      accountEmail: Text(
+                        user.email,
+                      ),
+                      currentAccountPicture: CircleAvatar(
+                        minRadius: 10,
+                        maxRadius: 15,
+                        backgroundImage: NetworkImage(user.photo ??
+                            "https://media.istockphoto.com/vectors/man-avatar-icon-man-flat-icon-man-faceless-avatar-man-character-vector-id1027708446"),
+                      ),
+                    ),
                     CustomListTile(
-                        text: "Editar Conta",
-                        icon: Icons.person,
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProfileModule()));
-                        }),
+                      text: "Editar Conta",
+                      icon: Icons.person,
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfileModule()));
+                      },
+                    ),
                     CustomListTile(
                         text: "Eventos",
                         icon: Icons.event_available,
@@ -76,22 +64,23 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   ],
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Container(
                 height: 50,
                 color: Colors.white,
                 child: ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.transit_enterexit,
                     color: Colors.black,
                     size: 35,
                   ),
-                  title: Text(
+                  title: const Text(
                     "SAIR",
                     style: TextStyle(color: Colors.black),
                   ),
                   onTap: () async {
-                    await AppModule.to.bloc<AuthBloc>().logOff();
+                    AppModule.to.bloc<AuthenticationBloc>().signOut();
+
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

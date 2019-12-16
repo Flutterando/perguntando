@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class BottomClipper extends CustomClipper<Path> {
+ 
+  const BottomClipper();
   
   @override
   Path getClip(Size size) {
